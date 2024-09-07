@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'inter', sans-serif;
+}
+body{
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+.sen{
+    width: 50%;
+    float: left;
+    padding-right: 15px;
+}
+.input-box{
+    background-color: #DB1428;
+    padding: 30px 40px;
+    width: 600px;
+    border-radius: 10px;
+}
+.input-box h2{
+    font-size: 30px;
+    color: #f7f7f7;
+}
+.input-box p{
+    font-weight: bold;
+    color:#f7f7f7;
+}
+.input-box p a{
+    color: #000000;
+    text-decoration: none;
+    font-size: 20px;
+}
+.input-box p a:hover{
+    color: #149ADB;
+}
+.input-box form{
+    margin: 55px 0;
+}
+form .input-group{
+    margin-bottom: 15px;
+}
+form .input-group label{
+    color: #f7f7f7;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+form .input-group input{
+    width: 100%;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 40px;
+    outline: none;
+    border: 2px solid rgba(231, 231, 231, 0.2);
+    color: #f7f7f7;
+    padding: 20px 45px 20px 20px;
+    font-size: 16px;
+}
+form .input-group button{
+    width: 100%;
+    height: 50px;
+    background: #fff;
+    border-radius: 40px;
+    outline: none;
+    border: none;
+    margin-top: 15px;
+    color: #000000;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+@media (max-width: 930px) {
+    .input-box {
+        width: 90%;
+        padding: 20px; /* Reduz o padding para telas menores */
+    }
+}
+
+@media (max-width: 700px) {
+    .input-box h2 {
+        font-size: 1.8rem; /* Reduz o tamanho da fonte */
+    }
+    .input-box p a {
+        font-size: 1rem; /* Reduz o tamanho da fonte */
+    }
+    form .input-group input, 
+    form .input-group button {
+        height: 45px; /* Ajusta a altura dos inputs e botões */
+    }
+}
+
+@media (max-width: 500px) {
+    .input-box {
+        padding: 15px; /* Reduz o padding ainda mais para telas menores */
+    }
+    .input-box h2 {
+        font-size: 1.6rem; /* Ajusta o tamanho da fonte para telas muito pequenas */
+    }
+}

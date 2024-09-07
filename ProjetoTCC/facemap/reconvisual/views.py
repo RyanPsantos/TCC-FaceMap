@@ -1,17 +1,16 @@
 from django.shortcuts import render
 
+def index(request):
+    return render(request, 'reconvisual/index.html')
+
+def cadastro(request):
+    return render(request, 'reconvisual/cadastro.html')
+
 def home(request):
     return render(request, 'reconvisual/home.html')
-# 1- Trocar o home para index, aqui sera a pagina de login do usuario
-def teste1(request):
-    return render(request, 'reconvisual/teste1.html')
-# 2- Trocar o teste1 para cadastro, aqui sera a pagina de cadastro que tera um link de acesso pelo login...
-def teste2(request):
-    return render(request, 'reconvisual/teste2.html')
-# 3- Trocar o teste2 para a home do projeto, aonde sera apresentada todas as funçoes e funcionalidades do projeto
-def teste3(request):
-    return render(request, 'reconvisual/teste3.html')
-# 4- Pagina de teste de funçoes hmtls e paginas, assim que conclouida sera feita um Teste 5, e assim por diante ate que todas as telas estejao satisfatorias aos integrantes do projeto
+
+def cadastroalunos(request):
+    return render(request, 'reconvisual/cadastroalunos.html')
 
 
 "ATENÇAO aos codigos essencias do Python Django"
