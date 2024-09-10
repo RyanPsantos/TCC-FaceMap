@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
 *{
     margin: 0;
     padding: 0;
@@ -94,4 +93,8 @@ body{
 }
 .link-register p a:hover{
     text-decoration: underline;
+}
+img{
+    width: 100%;
+    height: 100%;
 }

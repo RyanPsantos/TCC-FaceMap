@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+/* Estilos básicos para o cabeçalho */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.logo-container .logo {
+    height: 50px; /* Ajuste a altura do logo conforme necessário */
+}
+
+.navigation ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation ul li {
+    margin: 0 15px;
+}
+
+.navigation ul li a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.navigation ul li a:hover {
+    text-decoration: underline;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-actions .user-img, .user-actions .logout-img {
+    height: 30px; /* Ajuste a altura das imagens conforme necessário */
+    margin-left: 10px;
+}
+
+.user-actions .logout-img {
+    cursor: pointer;
+}
