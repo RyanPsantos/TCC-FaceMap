@@ -1,49 +1,118 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-/* Estilos básicos para o cabeçalho */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-}
 
-.logo-container .logo {
-    height: 50px; /* Ajuste a altura do logo conforme necessário */
-}
-
-.navigation ul {
-    display: flex;
-    list-style: none;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
-
-.navigation ul li {
-    margin: 0 15px;
+body {
+    background-color: #c7c7c7;
+    padding-top: 80px; /* Adiciona espaço para o header fixo */
 }
-
-.navigation ul li a {
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    background: #149ADB;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    flex-wrap: wrap; /* Permite que o conteúdo quebre para a próxima linha em telas menores */
+}
+.img01 {
+    width: 150px;
+}
+.navbar {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebra em telas menores */
+    justify-content: center; /* Centraliza os links */
+    align-items: center;
+    gap: 20px; /* Espaço entre os links */
+}
+.navbar a {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 500;
     text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
+    position: relative;
 }
-
-.navigation ul li a:hover {
-    text-decoration: underline;
+.navbar a::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: .3s;
 }
-
-.user-actions {
+.navbar a:hover::before {
+    width: 100%;
+}
+.user-info {
     display: flex;
     align-items: center;
+    gap: 20px; /* Espaço entre nome e botão */
 }
-
-.user-actions .user-img, .user-actions .logout-img {
-    height: 30px; /* Ajuste a altura das imagens conforme necessário */
-    margin-left: 10px;
+.username {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 500;
 }
-
-.user-actions .logout-img {
+.logout-button {
+    background-color: #DB1428;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+.logout-button:hover {
+    background-color: #B11220;
+}
+/* Footer */
+.footer {
+    background-color: #149ADB;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px; /* Espaço acima do footer */
+}
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Espaço entre os links */
+    margin-top: 10px;
+}
+.footer-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+/* Responsividade */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px; /* Ajusta o padding */
+        flex-direction: column; /* Coloca o conteúdo em coluna */
+        align-items: center; /* Centraliza o conteúdo */
+    }
+    .navbar {
+        margin-top: 10px;
+    }
+    .user-info {
+        margin-top: 10px;
+    }
+    .footer-nav {
+        flex-direction: column; /* Coloca o conteúdo em coluna */
+        gap: 10px; /* Ajusta o espaço entre os links */
+    }
 }
