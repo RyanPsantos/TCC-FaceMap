@@ -10,7 +10,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: rgba(219, 219, 219, 0.952);
+    background: rgba(255, 255, 255, 0.952);
 }
 .login{
     width: 420px;
