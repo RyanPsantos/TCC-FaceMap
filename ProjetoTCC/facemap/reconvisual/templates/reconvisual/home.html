@@ -12,10 +12,9 @@
     <header class="header">
         <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
         <nav class="navbar">
-            <a href="#">Home</a>
-            <a href="#">Cadastrar</a>
-            <a href="#">FaceMap</a>
-            <a href="#">Sobre nós</a>
+            <a href="{% url 'cadastroalunos' %}">Cadastrar</a>
+            <a href="{% url 'facemap' %}">FaceMap</a>
+            <a href="{% url 'sobre' %}">Sobre nós</a>
         </nav>
         <!-- Novo elemento: Nome do usuário logado -->
         <div class="user-info">
@@ -34,9 +33,9 @@
 
         <!-- Caixa de cadastro/edição de usuário -->
         <div class="box user-box">
-            <h2>Cadastro ou Edição de Usuário</h2>
-            <p>Altere suas informações pessoais ou cadastre-se no sistema para começar a utilizar nossos serviços.</p>
-            <button>Editar Perfil</button>
+            <h2>Edição de Usuário</h2>
+            <p>Altere suas informações pessoais para começar a utilizar nossos serviços.</p>
+            <button onclick="window.location.href='{% url 'editar' %}'">Editar Usuario</button>
         </div>
     </main>
 

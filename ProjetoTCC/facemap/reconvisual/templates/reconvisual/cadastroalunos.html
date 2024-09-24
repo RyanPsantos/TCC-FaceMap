@@ -4,39 +4,21 @@
         {% load static %}
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+        <link rel="stylesheet" href="{% static 'css/cadastroalunos.css' %}">
         <title>CADASTRO</title>
         <body>
             <header class="header">
-                <div class="logo-container">
-                    <img
-                        src="{% static 'img/camargo att.png' %}"
-                        alt="Logo da Instituição"
-                        class="logo">
-                </div>
-                <nav class="navigation">
-                    <ul>
-                        <li>
-                            <a href="/">Início</a>
-                        </li>
-                        <li>
-                            <a href="/sobre">Sobre</a>
-                        </li>
-                        <li>
-                            <a href="/contato">Cadastro</a>
-                        </li>
-                    </ul>
+                <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
+                <nav class="navbar">
+                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'facemap' %}">FaceMap</a>
+                    <a href="{% url 'sobre' %}">Sobre nós</a>
                 </nav>
-                <div class="user-actions">
-                    <a href="/perfil">
-                        <img
-                            src="{% static 'images/user-profile.png' %}"
-                            alt="Perfil do Usuário"
-                            class="user-img">
-                    </a>
-                    <a href="/logout" class="logout">
-                        <img src="{% static 'images/logout.png' %}" alt="Sair" class="logout-img">
-                    </a>
+                <!-- Novo elemento: Nome do usuário logado -->
+                <div class="user-info">
+                    <i class='bx bxs-user'></i>
+                    <span class="username">Usuário Logado</span>
+                    <button class="logout-button">Sair</button>
                 </div>
             </header>
         </body>
