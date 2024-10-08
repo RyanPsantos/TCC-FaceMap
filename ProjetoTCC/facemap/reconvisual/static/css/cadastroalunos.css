@@ -1,22 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
+html, body{
+    height: 100%;
+}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
-
 body {
-    background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    justify-content: space-between; /* Espaça o conteúdo e o footer */
+    background-color: #ffffff;
+    padding-top: 20px; /* /* Adiciona espaço para o header fixo */
 }
-
 .header {
     position: fixed;
     top: 0;
@@ -28,21 +26,16 @@ body {
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    flex-wrap: wrap; /* Permite que o conteúdo quebre para a próxima linha em telas menores */
 }
-
 .img01 {
     width: 150px;
 }
-
 .navbar {
     display: flex;
-    flex-wrap: wrap; /* Permite quebra em telas menores */
-    justify-content: center; /* Centraliza os links */
+    justify-content: center;
     align-items: center;
-    gap: 20px; /* Espaço entre os links */
+    gap: 20px;
 }
-
 .navbar a {
     font-size: 18px;
     color: #fff;
@@ -50,7 +43,6 @@ body {
     text-decoration: none;
     position: relative;
 }
-
 .navbar a::before {
     content: '';
     position: absolute;
@@ -61,23 +53,19 @@ body {
     background: #fff;
     transition: .3s;
 }
-
 .navbar a:hover::before {
     width: 100%;
 }
-
 .user-info {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaço entre nome e botão */
+    gap: 20px;
 }
-
 .username {
     font-size: 18px;
     color: #fff;
     font-weight: 500;
 }
-
 .logout-button {
     background-color: #DB1428;
     color: #fff;
@@ -88,92 +76,61 @@ body {
     font-size: 16px;
     font-weight: bold;
 }
-
 .logout-button:hover {
     background-color: #B11220;
 }
-
 h2 {
     color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
-
-.search-box {
-    width: 100%;
-    max-width: 500px; /* Ajustei a largura máxima */
+main {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    padding: 20px;
+    flex-grow: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
+    margin-top: 70px;
 }
-
-.search-box input {
-    width: 75%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    outline: none;
-}
-
-.search-box button {
-    padding: 12px;
-    border: none;
-    background-color: #149ADB;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 10px;
-}
-
 .form-container {
     background-color: #fff;
-    padding: 30px;
+    padding: 20px;
     width: 100%;
-    max-width: 500px; /* Diminui a largura máxima */
+    max-width: 400px; /* Reduzi o tamanho máximo do formulário */
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Espaço abaixo do formulário */
+    margin: 20px auto;
 }
-
 .form-container h2 {
     text-align: center;
     font-weight: 600;
     color: #149ADB;
 }
-
 form {
-    margin-top: 20px;
+    margin-top: 10px;
 }
-
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduzi o espaçamento entre campos */
 }
-
 .input-group label {
     display: block;
     color: #555;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
-
 .input-group input, .input-group select {
     width: 100%;
-    padding: 8px; /* Diminui o padding */
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 12px; /* Diminui o tamanho da fonte */
+    font-size: 14px;
     outline: none;
 }
-
 .input-group select {
     cursor: pointer;
 }
-
 .form-container button {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     background-color: #149ADB;
     border: none;
     color: #fff;
@@ -182,55 +139,51 @@ form {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 .form-container button:hover {
     background-color: #1179a8;
 }
-
+/* Footer */
 .footer {
     background-color: #149ADB;
     color: #fff;
     text-align: center;
-    padding: 20px;
+    padding: 20px 0; /* Remove o padding lateral */
     position: relative;
-    width: 100%;
+    width: 100vw; /* Garante que o footer ocupe 100% da largura da viewport */
+    left: 0; /* Garante que o footer comece no lado esquerdo */
+    margin: 0; /* Remove qualquer margem que possa criar brechas */
 }
-
 .footer-nav {
     display: flex;
     justify-content: center;
     gap: 30px; /* Espaço entre os links */
     margin-top: 10px;
 }
-
 .footer-nav a {
     color: #fff;
     text-decoration: none;
     font-size: 14px;
 }
-
 .footer-nav a:hover {
     text-decoration: underline;
 }
-
+/* Responsividade */
 @media (max-width: 768px) {
-    .form-container, .search-box {
-        padding: 20px;
+    .form-container {
+        padding: 15px;
+        max-width: 100%; /* Garante que o formulário ocupe bem o espaço em telas menores */
     }
-    
     .form-container h2 {
-        font-size: 20px;
+        font-size: 18px;
     }
-    
-    .input-group input, .input-group select, .search-box input {
-        font-size: 12px; /* Ajusta o tamanho da fonte para dispositivos menores */
-        padding: 8px; /* Reduz o padding ainda mais */
+    .input-group input, .input-group select {
+        font-size: 12px;
+        padding: 7px;
     }
-    
     .form-container button {
         font-size: 14px;
     }
-    
+
     .footer-nav {
         flex-direction: column; /* Coloca o conteúdo em coluna */
         gap: 10px; /* Ajusta o espaço entre os links */
