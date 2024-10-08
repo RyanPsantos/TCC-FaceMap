@@ -1,21 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-html, body{
-    height: 100%;
-}
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
-body{
+
+body {
+    background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Espaça o conteúdo e o footer */
-    background-color: #c7c7c7;
-    padding-top: 80px; /* /* Adiciona espaço para o header fixo */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
-.header{
+
+.header {
     position: fixed;
     top: 0;
     left: 0;
@@ -28,24 +30,28 @@ body{
     z-index: 100;
     flex-wrap: wrap; /* Permite que o conteúdo quebre para a próxima linha em telas menores */
 }
-.img01{
+
+.img01 {
     width: 150px;
 }
-.navbar{
+
+.navbar {
     display: flex;
     flex-wrap: wrap; /* Permite quebra em telas menores */
     justify-content: center; /* Centraliza os links */
     align-items: center;
     gap: 20px; /* Espaço entre os links */
 }
-.navbar a{
+
+.navbar a {
     font-size: 18px;
     color: #fff;
     font-weight: 500;
     text-decoration: none;
     position: relative;
 }
-.navbar a::before{
+
+.navbar a::before {
     content: '';
     position: absolute;
     top: 100%;
@@ -55,20 +61,24 @@ body{
     background: #fff;
     transition: .3s;
 }
-.navbar a:hover::before{
+
+.navbar a:hover::before {
     width: 100%;
 }
-.user-info{
+
+.user-info {
     display: flex;
     align-items: center;
     gap: 20px; /* Espaço entre nome e botão */
 }
-.username{
+
+.username {
     font-size: 18px;
     color: #fff;
     font-weight: 500;
 }
-.logout-button{
+
+.logout-button {
     background-color: #DB1428;
     color: #fff;
     border: none;
@@ -78,6 +88,151 @@ body{
     font-size: 16px;
     font-weight: bold;
 }
-.logout-button:hover{
+
+.logout-button:hover {
     background-color: #B11220;
+}
+
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 500px; /* Ajustei a largura máxima */
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.search-box input {
+    width: 75%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-box button {
+    padding: 12px;
+    border: none;
+    background-color: #149ADB;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px; /* Diminui a largura máxima */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Espaço abaixo do formulário */
+}
+
+.form-container h2 {
+    text-align: center;
+    font-weight: 600;
+    color: #149ADB;
+}
+
+form {
+    margin-top: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 8px; /* Diminui o padding */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 12px; /* Diminui o tamanho da fonte */
+    outline: none;
+}
+
+.input-group select {
+    cursor: pointer;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #149ADB;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #1179a8;
+}
+
+.footer {
+    background-color: #149ADB;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Espaço entre os links */
+    margin-top: 10px;
+}
+
+.footer-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .form-container, .search-box {
+        padding: 20px;
+    }
+    
+    .form-container h2 {
+        font-size: 20px;
+    }
+    
+    .input-group input, .input-group select, .search-box input {
+        font-size: 12px; /* Ajusta o tamanho da fonte para dispositivos menores */
+        padding: 8px; /* Reduz o padding ainda mais */
+    }
+    
+    .form-container button {
+        font-size: 14px;
+    }
+    
+    .footer-nav {
+        flex-direction: column; /* Coloca o conteúdo em coluna */
+        gap: 10px; /* Ajusta o espaço entre os links */
+    }
 }
