@@ -1,3 +1,74 @@
-<h1>Teste
-    
-</h1>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/facemap.css' %}">
+    <title>FaceMap</title>
+</head>
+<body>
+    <header class="header">
+        <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
+        <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'cadastroalunos' %}">Cadastrar</a>
+            <a href="{% url 'sobre' %}">Sobre nós</a>
+        </nav>
+        <!-- Novo elemento: Nome do usuário logado -->
+        <div class="user-info">
+            <i class='bx bxs-user'></i>
+            <span class="username">Usuário Logado</span>
+            <button class="logout-button">Sair</button>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>FaceMap</h1>
+            <p>Sistema de autenticação baseado em características únicas</p>
+        </div>
+    </main>
+    <section class="content">
+        <div class="container">
+            <h2>O que é?</h2>
+            <p>
+                A biometria facial, ou sistema de reconhecimento facial, é um dos vários métodos atuais para autenticar a identidade de um indivíduo, substituindo a entrega de documentos pessoais. Com métodos digitais como este, o processo se torna mais fácil e atualizado. Além da biometria facial, existem outros métodos digitais, como biometria digital, ocular (retina e íris) e vocal.
+            </p>
+
+            <h2>Como funciona?</h2>
+            <p>
+                Cada indivíduo possui características físicas únicas, e é por meio dessas características que a biometria facial funciona. A inteligência artificial (IA) é treinada para reconhecer um rosto humano e todas as suas variações, permitindo a identificação precisa de uma pessoa.
+            </p>
+
+            <h2>Como pode ser aplicada no dia a dia?</h2>
+            <p>
+                A biometria facial é amplamente utilizada em residências (como apartamentos e condomínios), em estabelecimentos comerciais e em empresas, ajudando no controle de cargos e funcionários, além de garantir a segurança do local.
+            </p>
+
+            <h2>Vantagens</h2>
+            <ul>
+                <li>Maior segurança e prevenção de fraudes e golpes</li>
+                <li>Controle de acesso eficiente</li>
+                <li>Inovação tecnológica</li>
+                <li>Proteção aos pertences pessoais</li>
+                <li>Elimina a necessidade de documento físico</li>
+            </ul>
+
+            <h2>Controle de Acesso</h2>
+            <p>
+                Com um sistema de reconhecimento facial ativo, há a garantia de saber quem está em determinado local, registrando quem entra, permanece e sai, aumentando o nível de segurança.
+            </p>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© FaceMap. Todos os direitos reservados.</p>
+        <nav class="footer-nav">
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Termos de Serviço</a>
+            <a href="#">Contato</a>
+        </nav>
+    </footer>
+</body>
+</html>

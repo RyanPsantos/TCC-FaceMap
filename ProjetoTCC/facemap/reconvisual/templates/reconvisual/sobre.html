@@ -1,1 +1,103 @@
-<h1>teste</h1>
+<!DOCTYPE html>
+<html lang="PT-br">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'css/sobre.css' %}">
+<title>Sobre Nos</title>
+       <body>
+       <header class="header">
+        <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
+            <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'cadastroalunos' %}">Cadastrar</a>
+            <a href="{% url 'facemap' %}">FaceMap</a>
+            </nav>
+            <!-- Novo elemento: Nome do usuário logado -->
+        <div class="user-info">
+            <i class='bx bxs-user'></i>
+            <span class="username">Usuário Logado</span>
+            <button class="logout-button">Sair</button>
+        </div>
+</header>
+<main>
+    <div class="container">
+        <h1>Equipe do FaceMap</h1>
+        <p>Conheça os participantes e suas responsabilidades no projeto</p>
+    </div>
+</main>
+<section class="team">
+    <div class="container">
+        <div class="team-member">
+            <h2>Nome</h2>
+            <p><strong>Responsável por:</strong> Desenvolvimento Backend (Django, APIs)</p>
+            <p><strong>Contribuições:</strong> Criação das APIs de reconhecimento facial, integração do banco de dados e segurança de acesso.</p>
+            <div class="links">
+                <a href="https://github.com/joaosilva" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/joaosilva" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <h2>Nome</h2>
+            <p><strong>Responsável por:</strong> Desenvolvimento Backend (Django, APIs)</p>
+            <p><strong>Contribuições:</strong> Criação das APIs de reconhecimento facial, integração do banco de dados e segurança de acesso.</p>
+            <div class="links">
+                <a href="https://github.com/joaosilva" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/joaosilva" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <h2>Nome</h2>
+            <p><strong>Responsável por:</strong> Desenvolvimento Backend (Django, APIs)</p>
+            <p><strong>Contribuições:</strong> Criação das APIs de reconhecimento facial, integração do banco de dados e segurança de acesso.</p>
+            <div class="links">
+                <a href="https://github.com/joaosilva" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/joaosilva" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <h2>Nome</h2>
+            <p><strong>Responsável por:</strong> Desenvolvimento Backend (Django, APIs)</p>
+            <p><strong>Contribuições:</strong> Criação das APIs de reconhecimento facial, integração do banco de dados e segurança de acesso.</p>
+            <div class="links">
+                <a href="https://github.com/joaosilva" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/joaosilva" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <h2>Nome</h2>
+            <p><strong>Responsável por:</strong> Desenvolvimento Backend (Django, APIs)</p>
+            <p><strong>Contribuições:</strong> Criação das APIs de reconhecimento facial, integração do banco de dados e segurança de acesso.</p>
+            <div class="links">
+                <a href="https://github.com/joaosilva" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/joaosilva" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <h2>Nome</h2>
+            <p><strong>Responsável por:</strong> Desenvolvimento Backend (Django, APIs)</p>
+            <p><strong>Contribuições:</strong> Criação das APIs de reconhecimento facial, integração do banco de dados e segurança de acesso.</p>
+            <div class="links">
+                <a href="https://github.com/joaosilva" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/joaosilva" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<footer class="footer">
+    <p>© FaceMap. Todos os direitos reservados.</p>
+    <nav class="footer-nav">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Serviço</a>
+        <a href="#">Contato</a>
+    </nav>
+</footer>
+</body>
+</html>

@@ -1,7 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-html, body{
-    height: 100%;
-}
 *{
     margin: 0;
     padding: 0;
@@ -13,7 +10,7 @@ body{
     flex-direction: column;
     justify-content: space-between; /* Espaça o conteúdo e o footer */
     background-color: #ffffff;
-    padding-top: 80px; /* /* Adiciona espaço para o header fixo */
+    padding-top: 67px; /* /* Adiciona espaço para o header fixo */
 }
 .header{
     position: fixed;
@@ -81,58 +78,49 @@ body{
 .logout-button:hover{
     background-color: #B11220;
 }
+.container{
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    max-width: 1200px;
+}
 main{
-    display: flex; /* Faz com que o main cresça para ocupar o espaço restante */
-    padding: 20px;
-    justify-content: space-around;
+    background: #3a6ea5;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
 }
-.box{
+main h1{
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
+main p{
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+.content{
+    padding: 40px 0;
     background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 45%;
 }
-.box h2{
-    margin-bottom: 15px;
-    font-size: 22px;
-    color: #149ADB;
-}
-.box p{
-    font-size: 16px;
+h2{
     color: #333;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
 }
-.recognition-box{
-    text-align: center;
+p{
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.8;
 }
-.recognition-box img{
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 15px;
+ul{
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
-.user-box{
-    text-align: center;
+ul li{
+    margin-bottom: 10px;
+    font-size: 1.1rem;
 }
-.user-box a{
-    text-decoration: none;
-    color: #fff;
-}
-.user-box button{
-    background-color: #149ADB;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 15px;
-}
-.user-box button:hover{
-    background-color: #1179a8;
-}
-/* Footer */
 .footer{
     background-color: #149ADB;
     color: #fff;
@@ -168,8 +156,43 @@ main{
     .user-info {
         margin-top: 10px;
     }
+    .container {
+        width: 90%;
+    }
+    main h1 {
+        font-size: 2rem;
+    }
+    main p {
+        font-size: 1rem;
+    }
+    h2 {
+        font-size: 1.5rem;
+    }
+    p, ul li {
+        font-size: 1rem;
+    }
+    footer p {
+        font-size: 0.8rem;
+    }
     .footer-nav {
         flex-direction: column; /* Coloca o conteúdo em coluna */
         gap: 10px; /* Ajusta o espaço entre os links */
+    }
+}
+@media (max-width: 480px) {
+    main h1 {
+        font-size: 1.8rem;
+    }
+    main p {
+        font-size: 0.9rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+    }
+    p, ul li {
+        font-size: 0.9rem;
+    }
+    footer p {
+        font-size: 0.7rem;
     }
 }

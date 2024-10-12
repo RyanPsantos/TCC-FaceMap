@@ -18,8 +18,8 @@ def facemap(request):
 def sobre(request):
     return render(request, 'reconvisual/sobre.html')
 
-def editarusuario(request):
-    return render(request, 'reconvisual/editarusuario.html')
+def editar(request):
+    return render(request, 'reconvisual/editar.html')
 
 "ATENÇAO aos codigos essencias do Python Django"
 "O comando python manage.py runserver e para rodar o servidor e so ira funcionar quando estiver na raiz do projeto, ou seja o facemap"

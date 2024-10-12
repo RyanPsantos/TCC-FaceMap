@@ -8,5 +8,5 @@ urlpatterns = [
     path('cadastroalunos/', views.cadastroalunos, name='cadastroalunos'),
     path('facemap/', views.facemap, name='facemap'),
     path('sobre/', views.sobre, name='sobre'),
-    path('editarusuario', views.editarusuario, name='editar'),
+    path('editar/', views.editar, name='editar'),
 ]

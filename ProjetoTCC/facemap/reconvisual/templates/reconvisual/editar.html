@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="PT-br">
+<head>
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'css/editar.css' %}">
+<title>CADASTRO</title>
+       <body>
+       <header class="header">
+        <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
+            <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'facemap' %}">FaceMap</a>
+            <a href="{% url 'sobre' %}">Sobre nós</a>
+            </nav>
+            <!-- Novo elemento: Nome do usuário logado -->
+        <div class="user-info">
+            <i class='bx bxs-user'></i>
+            <span class="username">Usuário Logado</span>
+            <button class="logout-button">Sair</button>
+        </div>
+</header>
+<main>
+    <div class="container">
+        <h1>Editar Cadastro de Aluno</h1>
+    </div>
+</main>
+
+<section class="content">
+    <div class="container">
+        <div class="form-container">
+            <h2>Dados do Aluno</h2>
+            <form action="#" method="post">
+                <div class="input-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" value="João da Silva" placeholder="Digite o nome completo">
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="joao@example.com" placeholder="Digite o email">
+                </div>
+                <div class="input-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" value="11987654321" placeholder="Digite o telefone">
+                </div>
+                <div class="input-group">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" value="Rua das Flores, 123" placeholder="Digite o endereço">
+                </div>
+                <div class="input-group">
+                    <label for="rg">RG</label>
+                    <input type="text" id="rg" value="123456789" placeholder="Digite o RG">
+                </div>
+                <div class="input-group">
+                    <label for="rm">Registro de Matrícula (RM)</label>
+                    <input type="text" id="rm" value="20240001" placeholder="Digite o RM">
+                </div>
+                <div class="input-group">
+                    <label for="nascimento">Data de Nascimento</label>
+                    <input type="date" id="nascimento" value="2000-01-01">
+                </div>
+                <div class="input-group">
+                    <label for="curso">Curso</label>
+                    <select id="curso">
+                        <option value="">Selecione o curso</option>
+                        <option value="Nutrição e Dietética" selected>Nutrição e Dietética</option>
+                        <option value="Administração">Administração</option>
+                        <option value="Contabilidade">Contabilidade</option>
+                        <option value="Finanças">Finanças</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Serviços Públicos">Serviços Públicos</option>
+                        <option value="Cozinha">Cozinha</option>
+                        <option value="Eventos">Eventos</option>
+                        <option value="Informática">Informática</option>
+                        <option value="Desenvolvimento de Sistemas">Desenvolvimento de Sistemas</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="face-id">Cadastrar Rosto</label>
+                    <input type="file" id="face-id">
+                </div>
+                <button type="submit">Atualizar Cadastro</button>
+            </form>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <p>© FaceMap. Todos os direitos reservados.</p>
+    <nav class="footer-nav">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Serviço</a>
+        <a href="#">Contato</a>
+    </nav>
+</footer>
+</body>
+</html>
