@@ -25,21 +25,22 @@
     </header>
     <main>
         <!-- Caixa de reconhecimento facial -->
-        <div class="box recognition-box">
-            <h2>Reconhecimento Facial</h2>
-            <p>Faça o reconhecimento facial para acessar seu perfil. O sistema usa sua imagem para autenticar sua identidade.</p>
-            <img src="https://via.placeholder.com/400x300" alt="Área de reconhecimento facial">
-        </div>
-
+    <div class="box recognition-box">
+        <h2>Reconhecimento Facial</h2>
+        <p>Faça o reconhecimento facial para acessar seu perfil. O sistema usa sua imagem para autenticar sua identidade.</p>
+        <img src="https://via.placeholder.com/400x300" alt="Área de reconhecimento facial">
+        <button id="recognize-button">Reconhecer</button> <!-- Botão para reconhecimento -->
+    </div>
         <!-- Caixa de cadastro/edição de usuário -->
-        <div class="box user-box">
-            <h2>Edição de Usuário</h2>
-            <p>Altere suas informações pessoais para começar a utilizar nossos serviços.</p>
-            <button><a href="{% url 'editar' %}">Editar</a></button>
+    <div class="box user-box">
+        <h2>Edição de Usuário</h2>
+        <p>Altere suas informações pessoais para começar a utilizar nossos serviços.</p>
+        <div class="user-image-placeholder">
+            <img src="https://via.placeholder.com/150" alt="Imagem de Usuário" class="user-image">
+            </div>
+        <button><a href="{% url 'editar' %}">Editar</a></button>
         </div>
     </main>
-
-
     <!-- Footer -->
     <footer class="footer">
         <p>© FaceMap. Todos os direitos reservados.</p>

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 html, body{
     height: 100%;
+    margin: 0;
 }
 *{
     margin: 0;
@@ -13,7 +14,7 @@ body{
     flex-direction: column;
     justify-content: space-between; /* Espaça o conteúdo e o footer */
     background-color: #ffffff;
-    padding-top: 80px; /* /* Adiciona espaço para o header fixo */
+    padding-top: 80px; /* Adiciona espaço para o header fixo */
 }
 .header{
     position: fixed;
@@ -30,6 +31,10 @@ body{
 }
 .img01{
     width: 150px;
+}
+.responsive-img {
+    max-width: 100%;
+    height: auto;
 }
 .navbar{
     display: flex;
@@ -81,17 +86,26 @@ body{
 .logout-button:hover{
     background-color: #B11220;
 }
-main{
-    display: flex; /* Faz com que o main cresça para ocupar o espaço restante */
+main {
+    display: flex;
+    justify-content: center; /* Centraliza as caixas horizontalmente */
+    align-items: flex-start; /* Alinha os itens ao topo do main */
     padding: 20px;
-    justify-content: space-around;
+    padding-top: 62px; /* Espaço suficiente para o header fixo */
+    gap: 20px; /* Espaço entre as duas caixas */
+    flex-wrap: wrap; /* Permite que as caixas quebrem para a próxima linha em telas menores */
+    flex: 1; /* Faz com que o main cresça para ocupar o espaço restante */
+    overflow: auto; /* Permite rolagem se o conteúdo exceder a altura */
 }
-.box{
+.box {
     background-color: #fff;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 45%;
+    width: 45%; /* Largura das caixas */
+    max-width: 500px; /* Limita o tamanho máximo das caixas */
+    min-width: 300px; /* Largura mínima para telas pequenas */
+    margin-bottom: 20px; /* Espaço inferior entre as caixas */
 }
 .box h2{
     margin-bottom: 15px;
@@ -105,6 +119,24 @@ main{
 .recognition-box{
     text-align: center;
 }
+.recognition-box, .user-box{
+    text-align: center;
+}
+.recognition-box button {
+    background-color: #149ADB; /* Cor de fundo do botão */
+    color: #fff; /* Cor do texto */
+    border: none; /* Remove a borda */
+    padding: 10px 20px; /* Espaçamento interno do botão */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor em forma de ponteiro */
+    font-size: 16px; /* Tamanho da fonte */
+    font-weight: bold; /* Negrito */
+    margin-top: 15px; /* Espaço acima do botão */
+    transition: background-color 0.3s; /* Transição suave para a mudança de cor */
+}
+.recognition-box button:hover {
+    background-color: #1179a8; /* Cor do botão ao passar o mouse */
+}
 .recognition-box img{
     width: 100%;
     height: auto;
@@ -113,6 +145,18 @@ main{
 }
 .user-box{
     text-align: center;
+    height: 400px;
+}
+.user-image-placeholder {
+    margin-top: 20px; /* Espaço acima da imagem */
+}
+
+.user-image {
+    width: 150px; /* Largura da imagem */
+    height: 150px; /* Altura da imagem */
+    border-radius: 50%; /* Faz a imagem redonda */
+    object-fit: cover; /* Corta a imagem mantendo a proporção */
+    display: inline-block; /* Centraliza a imagem */
 }
 .user-box a{
     text-decoration: none;
@@ -164,6 +208,10 @@ main{
     }
     .navbar {
         margin-top: 10px;
+    }
+    .box {
+        width: 100%; /* Em telas menores, as caixas ocuparão 100% da largura */
+        margin-bottom: 20px;
     }
     .user-info {
         margin-top: 10px;
