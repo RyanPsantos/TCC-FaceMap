@@ -13,6 +13,16 @@ body{
     padding: 20px;
     min-height: 100vh;
 }
+.messages {
+    margin-bottom: 15px;
+    padding: 10px;
+}.messages .success {
+    color: green;
+    font-weight: bold;
+}.messages .error {
+    color: red;
+    font-weight: bold;
+}  
 .sen{
     width: 50%;
     float: left;

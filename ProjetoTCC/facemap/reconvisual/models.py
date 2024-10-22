@@ -1,2 +1,18 @@
-from django.db import models
+from mongoengine import Document, StringField, EmailField, DateField, BinaryField
 
+class Aluno(Document):
+    nome_completo = StringField(required=True, max_length=200)
+    email_institucional = EmailField(required=True, max_length=100)
+    telefone = StringField(required=True, max_length=15)
+    endereco = StringField(required=True, max_length=300)
+    rg = StringField(required=True, max_length=12)
+    registro_matricula = StringField(required=True, max_length=15)
+    data_nascimento = DateField(required=True)
+    curso = StringField(required=True, max_length=100)
+    foto_rosto = BinaryField(required=True)
+
+class Professor(Document):
+    username = StringField(required=True, unique=True, max_length=100)
+    email_institucional = EmailField(required=True, max_length=100)
+    telefone = StringField(required=True, max_lenght=15)
+    senha = StringField(required=True, max_length=100)

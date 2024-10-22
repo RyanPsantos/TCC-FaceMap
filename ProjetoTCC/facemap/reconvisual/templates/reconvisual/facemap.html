@@ -19,8 +19,12 @@
         <!-- Novo elemento: Nome do usuário logado -->
         <div class="user-info">
             <i class='bx bxs-user'></i>
-            <span class="username">Usuário Logado</span>
-            <button class="logout-button">Sair</button>
+            <span class="username">{{ usuario_nome }} <!-- Variável de contexto passada da view --></span>
+            <!-- Botão de Logout -->
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Sair</button>
+            </form>
         </div>
     </header>
     <main>

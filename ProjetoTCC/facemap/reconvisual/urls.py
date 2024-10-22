@@ -9,4 +9,5 @@ urlpatterns = [
     path('facemap/', views.facemap, name='facemap'),
     path('sobre/', views.sobre, name='sobre'),
     path('editar/', views.editar, name='editar'),
+    path('logout/', views.logout, name='logout'),  # Usando seu método de logout personalizado
 ]

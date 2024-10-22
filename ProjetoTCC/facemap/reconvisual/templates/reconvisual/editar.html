@@ -17,8 +17,12 @@
         </nav>
         <div class="user-info">
             <i class='bx bxs-user'></i>
-            <span class="username">Usuário Logado</span>
-            <button class="logout-button">Sair</button>
+            <span class="username">{{ usuario_nome }} <!-- Variável de contexto passada da view --></span>
+            <!-- Botão de Logout -->
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Sair</button>
+            </form>
         </div>
     </header>
 
@@ -32,6 +36,7 @@
         <div class="container">
             <h2>Buscar Aluno</h2>
             <form id="searchForm" action="" method="GET" class="search-form">
+                {% csrf_token %}
                 <div class="input-group">
                     <label for="rm">Registro de Matrícula (RM)</label>
                     <input type="text" id="rm" name="rm" placeholder="Digite o RM" required>
