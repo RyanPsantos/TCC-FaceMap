@@ -9,7 +9,8 @@ class Aluno(Document):
     registro_matricula = StringField(required=True, max_length=15)
     data_nascimento = DateField(required=True)
     curso = StringField(required=True, max_length=100)
-    foto_rosto = BinaryField(required=True)
+    genero = StringField(required=True, choices=["masculino", "feminino", "outros", "prefiro_nao_dizer"])
+    foto_rosto = BinaryField(required=False)  # Removendo obrigatoriedade da imagem
 
 class Professor(Document):
     username = StringField(required=True, unique=True, max_length=100)
