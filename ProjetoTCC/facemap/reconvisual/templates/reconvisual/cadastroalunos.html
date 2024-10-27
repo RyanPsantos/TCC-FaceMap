@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="PT-br">
+<html lang="pt-br">
 <head>
 {% load static %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="{% static 'css/cadastroalunos.css' %}">
 <title>CADASTRO</title>
-       <body>
-       <header class="header">
-        <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
-            <nav class="navbar">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'facemap' %}">FaceMap</a>
-            <a href="{% url 'sobre' %}">Sobre nós</a>
-            </nav>
-            <!-- Novo elemento: Nome do usuário logado -->
-        <div class="user-info">
-            <i class='bx bxs-user'></i>
-            <span class="username">{{ usuario_nome }} <!-- Variável de contexto passada da view --></span>
-            <!-- Botão de Logout -->
-            <form method="POST" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Sair</button>
-            </form>
-        </div>
+</head>
+<body>
+<header class="header">
+    <img src="{% static 'img/camargo att.png' %}" alt="Logo" class="img01">
+    <nav class="navbar">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'facemap' %}">FaceMap</a>
+        <a href="{% url 'sobre' %}">Sobre nós</a>
+    </nav>
+    <div class="user-info">
+        <i class='bx bxs-user'></i>
+        <span class="username">{{ usuario_nome }}</span>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Sair</button>
+        </form>
+    </div>
 </header>
 <main class="content">
     <div class="container">
@@ -60,8 +60,8 @@
                     <input type="date" id="nascimento" name="data_nascimento">
                 </div>
                 <div class="input-group">
-                    <label for="curso" name="curso">Curso</label>
-                    <select id="curso">
+                    <label for="curso">Curso</label>
+                    <select id="curso" name="curso">
                         <option value="">Selecione o curso</option>
                         <option value="Nutrição e Dietética">Nutrição e Dietética</option>
                         <option value="Administração">Administração</option>
@@ -76,11 +76,21 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label for="face-id">Cadastrar Rosto</label>
-                    <input type="file" id="face-id" name="foto_rosto">
+                    <label for="genero">Gênero</label>
+                    <select id="genero" name="genero">
+                        <option value="">Selecione o gênero</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outros">Outros</option>
+                        <option value="prefiro_nao_dizer">Prefiro não dizer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="face-id">Capturar Rosto</label>
+                    <button type="button" id="capture-button">Capturar</button>
                 </div>
                 <button type="submit">Cadastrar Aluno</button>
-            </form>
+            </form>  
         </div>
     </div>
 </main>

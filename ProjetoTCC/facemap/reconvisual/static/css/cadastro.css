@@ -29,7 +29,7 @@ body{
     padding-right: 15px;
 }
 .input-box{
-    background-color: #5e0666;
+    background-color: #149ADB;
     padding: 30px 40px;
     width: 600px;
     border-radius: 10px;
@@ -48,7 +48,7 @@ body{
     font-size: 20px;
 }
 .input-box p a:hover{
-    color: #149ADB;
+    color: #DB1428;
 }
 .input-box form{
     margin: 55px 0;

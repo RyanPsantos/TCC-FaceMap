@@ -11,7 +11,7 @@ body {
     flex-direction: column;
     min-height: 100vh; /* Garantir que o corpo ocupe a altura total da tela */
     justify-content: space-between; /* Espaça o conteúdo e o footer */
-    background-color: #ffffff;
+    background-color: #f7f7f7;
     padding-top: 67px; /* Adiciona espaço para o header fixo */
 }
 .header {
@@ -62,12 +62,15 @@ body {
     align-items: center;
     gap: 20px; /* Espaço entre nome e botão */
 }
+.bx{
+    color: #ffffff;
+}
 .username {
     font-size: 18px;
     color: #fff;
     font-weight: 500;
 }
-.logout-button {
+.logout-button{
     background-color: #DB1428;
     color: #fff;
     border: none;
@@ -76,8 +79,9 @@ body {
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
+    transition: background-color 0.3s ease;
 }
-.logout-button:hover {
+.logout-button:hover{
     background-color: #B11220;
 }
 .container {
@@ -129,7 +133,7 @@ h2 {
     outline: none;
 }
 button {
-    background-color: #3a6ea5;
+    background-color: #149ADD;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -139,7 +143,7 @@ button {
     transition: background-color 0.3s ease;
 }
 button:hover {
-    background-color: #345a87;
+    background-color: #3a6ea5;
 }
 .footer {
     background-color: #149ADB;
