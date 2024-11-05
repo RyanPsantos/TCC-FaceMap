@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Professor, Aluno
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
+from mongoengine.errors import DoesNotExist
+from django.http import JsonResponse
 
 def login_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
@@ -103,6 +105,41 @@ def sobre(request):
 @login_required
 def editar(request):
     return render(request, 'reconvisual/editar.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
+
+@login_required
+def editar_aluno(request, aluno_id):
+    try:
+        aluno = Aluno.objects.get(id=aluno_id)
+    except DoesNotExist:
+        messages.error(request, "Aluno não encontrado.")
+        return redirect('editar')
+
+    if request.method == 'POST':
+        aluno.nome_completo = request.POST.get('nome_completo', aluno.nome_completo)
+        aluno.email_institucional = request.POST.get('email_institucional', aluno.email_institucional)
+        aluno.telefone = request.POST.get('telefone', aluno.telefone)
+        aluno.endereco = request.POST.get('endereco', aluno.endereco)
+        aluno.rg = request.POST.get('rg', aluno.rg)
+        aluno.data_nascimento = request.POST.get('data_nascimento', aluno.data_nascimento)
+        aluno.curso = request.POST.get('curso', aluno.curso)
+        aluno.genero = request.POST.get('genero', aluno.genero)
+        aluno.save()
+        messages.success(request, "Cadastro atualizado com sucesso!")
+        return redirect('editar')
+
+    return render(request, 'reconvisual/editar.html', {'aluno': aluno, 'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
+
+@login_required
+def buscar_aluno(request):
+    aluno = None
+    if request.method == 'GET':
+        rm = request.GET.get('rm')
+        if rm:
+            try:
+                aluno = Aluno.objects.get(registro_matricula=rm)
+            except DoesNotExist:
+                messages.error(request, 'Nenhum aluno encontrado com esse RM.')
+    return render(request, 'reconvisual/editar.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário'), 'aluno': aluno})
 
 def logout(request):
     request.session.flush()
