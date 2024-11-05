@@ -115,6 +115,7 @@ def editar_aluno(request, aluno_id):
         return redirect('editar')
 
     if request.method == 'POST':
+        # Atualiza os campos com os valores enviados pelo formulário
         aluno.nome_completo = request.POST.get('nome_completo', aluno.nome_completo)
         aluno.email_institucional = request.POST.get('email_institucional', aluno.email_institucional)
         aluno.telefone = request.POST.get('telefone', aluno.telefone)
@@ -123,9 +124,11 @@ def editar_aluno(request, aluno_id):
         aluno.data_nascimento = request.POST.get('data_nascimento', aluno.data_nascimento)
         aluno.curso = request.POST.get('curso', aluno.curso)
         aluno.genero = request.POST.get('genero', aluno.genero)
+        
+        # Salva as alterações no banco de dados
         aluno.save()
         messages.success(request, "Cadastro atualizado com sucesso!")
-        return redirect('editar')
+        return redirect('editar')  # Redireciona para a página de edição após salvar
 
     return render(request, 'reconvisual/editar.html', {'aluno': aluno, 'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
 
