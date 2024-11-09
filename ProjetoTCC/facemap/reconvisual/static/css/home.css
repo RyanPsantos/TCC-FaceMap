@@ -102,7 +102,7 @@ main {
     flex-wrap: wrap;
 }
 /* Box Styles */
-.box {
+.box{
     background-color: #fff;
     border-radius: 8px;
     padding: 20px;
@@ -117,12 +117,12 @@ main {
     height: 500px; /* Altura fixa para padronizar as caixas */
     justify-content: space-between;
 }
-.box h2 {
+.box h2{
     font-size: 22px;
     color: #149ADB;
     margin-bottom: 15px;
 }
-.box p {
+.box p{
     font-size: 16px;
     color: #333;
     margin-bottom: 20px;

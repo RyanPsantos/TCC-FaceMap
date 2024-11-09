@@ -25,15 +25,13 @@
             </form>
         </div>
     </header>
-
     <main>
         <div class="container">
             <h1>Editar Cadastro de Aluno</h1>
         </div>
     </main>
-
     <section class="content">
-        <div class="container">
+        <div class="box">
             <h2>Buscar Aluno</h2>
             <form id="searchForm" action="{% url 'buscar_aluno' %}" method="GET" class="search-form">
                 {% csrf_token %}
@@ -41,9 +39,11 @@
                     <label for="rm">Registro de Matrícula (RM)</label>
                     <input type="text" id="rm" name="rm" placeholder="Digite o RM" required>
                 </div>
+                <div class="image-container">
+                    <img src="{% static 'img/buscar.png' %}" alt="Área de edição do usuário" class="search-image">
+                </div>
                 <button type="submit">Buscar</button>
             </form>
-
             <div id="resultContainer" class="result-container">
                 {% if aluno %}
                     <h3>Resultados da Busca</h3>
