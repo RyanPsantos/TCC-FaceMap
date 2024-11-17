@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'reconvisual',
-    'reconConfig'
+    'reconconfig'
 ]
 
 MIDDLEWARE = [

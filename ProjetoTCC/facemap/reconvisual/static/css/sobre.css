@@ -9,7 +9,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Espaça o conteúdo e o footer */
-    background-color: #ffffff;
+    background-color: #f7f7f7;
     padding-top: 67px; /* /* Adiciona espaço para o header fixo */
 }
 .header{
@@ -60,6 +60,9 @@ body{
     align-items: center;
     gap: 20px; /* Espaço entre nome e botão */
 }
+.bx{
+    color: #ffffff;
+}
 .username{
     font-size: 18px;
     color: #fff;
@@ -74,11 +77,11 @@ body{
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 .logout-button:hover{
     background-color: #B11220;
 }
-
 .container{
     width: 80%;
     margin: auto;
@@ -117,7 +120,7 @@ main p{
 }
 .team-member p{
     font-size: 1rem;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: #666;
 }
 .links{
@@ -125,7 +128,7 @@ main p{
 }
 .links a{
     text-decoration: none;
-    background-color: #1c1d5d;
+    background-color: #149ADB;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -133,7 +136,7 @@ main p{
     transition: background-color 0.3s ease;
 }
 .links a:hover {
-    background-color: #345a87;
+    background-color: #3a6ea5;
 }
 
 .footer{

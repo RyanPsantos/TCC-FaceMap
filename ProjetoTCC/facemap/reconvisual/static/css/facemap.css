@@ -9,7 +9,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Espaça o conteúdo e o footer */
-    background-color: #ffffff;
+    background-color: #f7f7f7;
     padding-top: 67px; /* /* Adiciona espaço para o header fixo */
 }
 .header{
@@ -60,6 +60,9 @@ body{
     align-items: center;
     gap: 20px; /* Espaço entre nome e botão */
 }
+.bx{
+    color: #ffffff;
+}
 .username{
     font-size: 18px;
     color: #fff;
@@ -74,6 +77,7 @@ body{
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 .logout-button:hover{
     background-color: #B11220;

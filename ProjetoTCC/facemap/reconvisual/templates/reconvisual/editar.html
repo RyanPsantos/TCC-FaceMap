@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="PT-br">
+<html lang="pt-br">
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{% static 'css/editar.css' %}">
-    <title>CADASTRO</title>
+    <title>Editar Cadastro de Aluno</title>
 </head>
 <body>
     <header class="header">
@@ -17,51 +18,89 @@
         </nav>
         <div class="user-info">
             <i class='bx bxs-user'></i>
-            <span class="username">{{ usuario_nome }} <!-- Variável de contexto passada da view --></span>
-            <!-- Botão de Logout -->
+            <span class="username">{{ usuario_nome }}</span>
             <form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="logout-button">Sair</button>
             </form>
         </div>
     </header>
-
     <main>
         <div class="container">
             <h1>Editar Cadastro de Aluno</h1>
         </div>
     </main>
-
     <section class="content">
-        <div class="container">
+        <div class="box">
             <h2>Buscar Aluno</h2>
-            <form id="searchForm" action="" method="GET" class="search-form">
+            <form id="searchForm" action="{% url 'buscar_aluno' %}" method="GET" class="search-form">
                 {% csrf_token %}
                 <div class="input-group">
                     <label for="rm">Registro de Matrícula (RM)</label>
                     <input type="text" id="rm" name="rm" placeholder="Digite o RM" required>
                 </div>
+                <div class="image-container">
+                    <img src="{% static 'img/buscar.png' %}" alt="Área de edição do usuário" class="search-image">
+                </div>
                 <button type="submit">Buscar</button>
             </form>
-
             <div id="resultContainer" class="result-container">
                 {% if aluno %}
                     <h3>Resultados da Busca</h3>
-                    <div class="aluno-info">
-                        <img src="{{ aluno.foto.url }}" alt="Foto do Aluno" class="foto-aluno">
-                        <div>
-                            <p><strong>Nome:</strong> {{ aluno.nome }}</p>
-                            <p><strong>Email:</strong> {{ aluno.email }}</p>
-                            <p><strong>Telefone:</strong> {{ aluno.telefone }}</p>
-                            <p><strong>Endereço:</strong> {{ aluno.endereco }}</p>
-                            <p><strong>RG:</strong> {{ aluno.rg }}</p>
-                            <p><strong>Data de Nascimento:</strong> {{ aluno.data_nascimento }}</p>
-                            <p><strong>Curso:</strong> {{ aluno.curso }}</p>
-                            <form action="{% url 'editar_aluno' aluno.id %}" method="GET">
-                                <button type="submit">Editar Cadastro</button>
-                            </form>
+                    <form action="{% url 'editar_aluno' aluno.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nome_completo">Nome Completo:</label>
+                            <input type="text" name="nome_completo" id="nome_completo" value="{{ aluno.nome_completo }}" required>
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="email_institucional">Email Institucional:</label>
+                            <input type="email" name="email_institucional" id="email_institucional" value="{{ aluno.email_institucional }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefone">Telefone:</label>
+                            <input type="text" name="telefone" id="telefone" value="{{ aluno.telefone }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endereco">Endereço:</label>
+                            <input type="text" name="endereco" id="endereco" value="{{ aluno.endereco }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rg">RG:</label>
+                            <input type="text" name="rg" id="rg" value="{{ aluno.rg }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data_nascimento">Data de Nascimento:</label>
+                            <input type="date" name="data_nascimento" id="data_nascimento" value="{{ aluno.data_nascimento|date:'Y-m-d' }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="curso">Curso:</label>
+                            <input type="text" name="curso" id="curso" value="{{ aluno.curso }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="genero">Gênero:</label>
+                            <input type="text" name="genero" id="genero" value="{{ aluno.genero }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imagem">Foto de Perfil:</label>
+                            <input type="file" name="imagem" id="imagem" class="form-control">
+                            {% if aluno.imagem %}
+                                <img src="{{ aluno.imagem.url }}" alt="Foto de Perfil" class="img-thumbnail mt-2">
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
                 {% else %}
                     <p>Nenhum aluno encontrado com esse RM.</p>
                 {% endif %}
