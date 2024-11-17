@@ -11,8 +11,10 @@ function abrirCamera() {
                 video.srcObject = stream;
             })
             .catch(function (error) {
-                console.log("Erro ao acessar a câmera: " + error);
+                alert("Erro ao acessar a câmera: " + error.message);
             });
+    } else {
+        alert("Acesso à câmera não é suportado neste navegador.");
     }
 }
 
