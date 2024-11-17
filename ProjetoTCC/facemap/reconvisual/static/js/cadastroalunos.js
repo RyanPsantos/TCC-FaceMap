@@ -2,41 +2,54 @@ let video = document.getElementById('video');
 let imagemRosto = document.getElementById('imagem_rosto');
 let cameraContainer = document.getElementById('camera-container');
 
-// Função para abrir a câmera
+// Abre a câmera ao clicar no botão "Capturar"
 function abrirCamera() {
-    cameraContainer.style.display = 'block';
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-                video.srcObject = stream;
-            })
-            .catch(function (error) {
-                alert("Erro ao acessar a câmera: " + error.message);
-            });
-    } else {
-        alert("Acesso à câmera não é suportado neste navegador.");
-    }
+    var cameraContainer = document.getElementById("camera-container");
+    var video = document.getElementById("video");
+
+    // Mostra a câmera
+    cameraContainer.style.display = "block";
+
+    // Acessa a webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            video.srcObject = stream;
+        })
+        .catch(function(err) {
+            console.log("Erro ao acessar a câmera: " + err);
+        });
 }
 
-// Função para capturar a imagem da câmera
+// Tira uma foto e preenche o campo de input com a imagem capturada
 function tirarFoto() {
-    let canvas = document.createElement('canvas');
+    var video = document.getElementById("video");
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+
+    // Configura o tamanho do canvas de acordo com a resolução do vídeo
     canvas.width = 320;
     canvas.height = 240;
-    let context = canvas.getContext('2d');
+
+    // Captura o quadro da webcam
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Converte a imagem em base64
-    let imagemBase64 = canvas.toDataURL('image/jpeg');
-    
-    // Armazena a imagem no campo oculto do formulário
-    imagemRosto.value = imagemBase64;
+    // Cria um arquivo de imagem a partir da captura (aqui continuamos com binário)
+    canvas.toBlob(function(blob) {
+        // Cria um objeto File a partir do blob
+        var file = new File([blob], "foto_rosto.png", { type: "image/png" });
 
-    // Opcional: parar o vídeo após a captura
-    let stream = video.srcObject;
-    let tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
-    video.srcObject = null;
+        // Preenche o campo de input de tipo file com o arquivo da foto
+        var inputFile = document.getElementById("imagem_rosto");
+        inputFile.files = new FileListItems([file]);
 
-    alert('Foto capturada com sucesso!');
+        // Oculta o container da câmera
+        document.getElementById("camera-container").style.display = "none";
+    }, "image/png");
+}
+
+// Função para criar um FileList (necessário para simular a atribuição do arquivo no input[type="file"])
+function FileListItems(files) {
+    var dataTransfer = new DataTransfer();
+    files.forEach(file => dataTransfer.items.add(file));
+    return dataTransfer.files;
 }

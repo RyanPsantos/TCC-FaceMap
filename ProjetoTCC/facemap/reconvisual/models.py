@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmailField, DateField
+from mongoengine import Document, StringField, EmailField, DateField, BinaryField
 
 class Aluno(Document):
     nome_completo = StringField(required=True, max_length=200)
@@ -10,7 +10,7 @@ class Aluno(Document):
     data_nascimento = DateField(required=True)
     curso = StringField(required=True, max_length=100)
     genero = StringField(required=True, choices=["masculino", "feminino", "outros", "prefiro_nao_dizer"])
-    foto_rosto = StringField()  # Alterado para StringField, pois você está armazenando base64 como uma string
+    foto_rosto = BinaryField(null=True, blank=True)  # Campo binário para armazenar a imagem do rosto
 
 class Professor(Document):
     username = StringField(required=True, unique=True, max_length=100)

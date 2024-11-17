@@ -29,7 +29,8 @@
     <div class="container">
         <div class="form-container">
             <h2>Cadastro de Aluno</h2>
-            <form action="{% url 'cadastroalunos' %}" method="POST">
+            <!-- Formulário -->
+            <form action="{% url 'cadastroalunos' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="input-group">
                     <label for="nome">Nome Completo</label>
@@ -85,6 +86,7 @@
                         <option value="prefiro_nao_dizer">Prefiro não dizer</option>
                     </select>
                 </div>
+                <!-- Captura de foto -->
                 <div class="input-group">
                     <label for="face-id">Capturar Rosto</label>
                     <button type="button" id="capture-button" onclick="abrirCamera()">Capturar</button>
@@ -92,10 +94,11 @@
                         <video id="video" width="320" height="240" autoplay></video>
                         <button type="button" onclick="tirarFoto()">Tirar Foto</button>
                     </div>
-                    <input type="hidden" id="imagem_rosto" name="imagem_rosto" />
+                    <!-- Campo oculto que será preenchido com o arquivo da foto -->
+                    <input type="file" id="imagem_rosto" name="imagem_rosto" style="display:none;">
                 </div>
                 <button type="submit">Cadastrar Aluno</button>
-            </form>  
+            </form>            
         </div>
     </div>
 </main>

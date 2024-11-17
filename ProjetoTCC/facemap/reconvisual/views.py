@@ -5,8 +5,6 @@ from django.contrib import messages
 from mongoengine.errors import DoesNotExist
 from django.http import JsonResponse
 from reconconfig.utils import captura_imagem  # Certifique-se que esta importação está correta
-from django.core.files.base import ContentFile
-import base64
 
 def login_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
@@ -67,6 +65,7 @@ def home(request):
 def reconhecimento(request):
     return render(request, 'reconvisual/reconhecimento.html')
 
+@login_required
 def cadastroalunos(request):
     if request.method == 'POST':
         nome_completo = request.POST.get('nome_completo')
@@ -78,11 +77,13 @@ def cadastroalunos(request):
         data_nascimento = request.POST.get('data_nascimento')
         curso = request.POST.get('curso')
         genero = request.POST.get('genero')
-        # Pega a imagem base64 enviada do formulário
-        imagem_rosto_base64 = request.POST.get('imagem_rosto')
+        foto_rosto = request.FILES.get('imagem_rosto')  # Recebe a imagem com o nome correto
 
-        if imagem_rosto_base64:
-            # Armazena a imagem como string base64
+        if foto_rosto:
+            # Lê a imagem e converte para bytes
+            foto_rosto_binaria = foto_rosto.read()
+
+            # Criação do novo aluno com a foto em formato binário
             novo_aluno = Aluno(
                 nome_completo=nome_completo,
                 email_institucional=email_institucional,
@@ -93,22 +94,24 @@ def cadastroalunos(request):
                 data_nascimento=data_nascimento,
                 curso=curso,
                 genero=genero,
-                foto_rosto=imagem_rosto_base64  # Armazena como base64
+                foto_rosto=foto_rosto_binaria  # Armazena a imagem como binário
             )
-            novo_aluno.save()
-
+            novo_aluno.save()  # Salva o aluno com a foto no banco
             messages.success(request, "Cadastro de aluno realizado com sucesso!")
             return redirect('home')
-        
+
         else:
             messages.error(request, "A imagem do rosto não pôde ser capturada.")
             return render(request, 'reconvisual/cadastroalunos.html')
+    
     return render(request, 'reconvisual/cadastroalunos.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
 
 def captura_rosto(request):
-    imagem_rosto_base64 = captura_imagem()
-    if imagem_rosto_base64:
-        return JsonResponse({'imagem_rosto': imagem_rosto_base64})
+    # Captura as imagens em formato binário
+    imagens_rosto_binarias = captura_imagem()
+    
+    if imagens_rosto_binarias:
+        return JsonResponse({'imagens_rosto': imagens_rosto_binarias})
     return JsonResponse({'error': 'Erro na captura da imagem'}, status=500)
 
 @login_required

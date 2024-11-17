@@ -1,5 +1,4 @@
 import cv2
-import base64
 import os
 from django.conf import settings
 
@@ -30,8 +29,9 @@ def captura_imagem():
 
     amostra = 1
     numeroAmostras = 25
+    imagens_fotos = []  # Lista para armazenar as imagens capturadas
 
-    while True:
+    while amostra <= numeroAmostras:
         conectado, imagem = camera.read()
         if not conectado:
             print("Erro ao acessar a câmera!")
@@ -49,12 +49,17 @@ def captura_imagem():
             # Processamento do rosto detectado
             imagemFace = cv2.resize(imagemCinza[y:y + a, x:x + l], (200, 200))
             
-            # Convertendo a imagem para base64
+            # Armazenar a imagem capturada na lista
             _, buffer = cv2.imencode('.jpg', imagemFace)
-            imagem_base64 = base64.b64encode(buffer).decode('utf-8')
-            
-            # Retorna a imagem em base64
-            return imagem_base64
+            imagem_binaria = buffer.tobytes()
+            imagens_fotos.append(imagem_binaria)
+
+            amostra += 1
+            print(f"Foto {amostra - 1} capturada. {numeroAmostras - (amostra - 1)} restantes.")
+
+            # Quando atingir o número de amostras, sai do loop
+            if amostra > numeroAmostras:
+                break
 
         # Se você quiser ver a imagem enquanto está detectando
         cv2.imshow("Face", imagem)
@@ -64,4 +69,6 @@ def captura_imagem():
     
     camera.release()
     cv2.destroyAllWindows()
-    return None
+
+    # Retorna todas as imagens capturadas em binário
+    return imagens_fotos
