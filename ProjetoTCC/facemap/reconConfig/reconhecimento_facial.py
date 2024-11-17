@@ -7,17 +7,21 @@ from pymongo import MongoClient
 from datetime import datetime
 from django.conf import settings
 from reconvisual.models import Aluno  # Importe seu modelo Aluno
+from pathlib import Path
 
 # Inicializa o Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'facemap.settings')
 if not settings.configured:
     django.setup()
 
+# Obter o diretório base do seu projeto
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # Configuração inicial para MongoDB e classificadores
 def configurar():
-    # Carregar classificadores em cascata
-    classificador_rosto = cv2.CascadeClassifier('C:/Users/CAMARGO/Desktop/TCC-FaceMap/ProjetoTCC/facemap/static/models/haarcascade_frontalface_default.xml')
-    classificador_olho = cv2.CascadeClassifier('C:/Users/CAMARGO/Desktop/TCC-FaceMap/ProjetoTCC/facemap/static/models/haarcascade_eye.xml')
+    # Caminho para os classificadores Haar dentro da pasta 'static/models'
+    classificador_rosto = cv2.CascadeClassifier(str(BASE_DIR / 'static' / 'models' / 'haarcascade_frontalface_default.xml'))
+    classificador_olho = cv2.CascadeClassifier(str(BASE_DIR / 'static' / 'models' / 'haarcascade_eye.xml'))
     
     # Verificar se os classificadores foram carregados corretamente
     if classificador_rosto.empty() or classificador_olho.empty():
@@ -43,21 +47,21 @@ def captura_imagem():
             break
         
         imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-        facesDetectadas = classificador.detectMultiScale(imagemCinza,
+        facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza,
                                                          scaleFactor=1.5,
                                                          minSize=(150, 150))
         for (x, y, l, a) in facesDetectadas:
             cv2.rectangle(imagem, (x, y), (x + l, y + a), (0, 0, 255), 2)
             regiao = imagem[y:y + a, x:x + l]
             regiaoCinzaOlho = cv2.cvtColor(regiao, cv2.COLOR_BGR2GRAY)
-            olhosDetectados = classificadorOlho.detectMultiScale(regiaoCinzaOlho)
+            olhosDetectados = classificador_olho.detectMultiScale(regiaoCinzaOlho)
 
             for (ox, oy, ol, oa) in olhosDetectados:
                 cv2.rectangle(regiao, (ox, oy), (ox + ol, oy + oa), (0, 255, 0), 2)
 
             # Converte a imagem para base64 quando pressionar 'q'
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                imagemFace = cv2.resize(imagemCinza[y:y + a, x:x + l], (largura, altura))
+                imagemFace = cv2.resize(imagemCinza[y:y + a, x:x + l], (200, 200))
 
                 # Armazena a imagem diretamente no MongoDB
                 aluno = Aluno(
@@ -95,6 +99,7 @@ def treina_modelo():
         faces.append(cv2.imdecode(imagem, cv2.IMREAD_GRAYSCALE))
         ids.append(str(documento.id))  # Usando id do MongoDB como identificador único
 
+    lbph = cv2.face.LBPHFaceRecognizer_create()  # Inicializa o reconhecedor
     lbph.train(faces, np.array(ids))
     lbph.write('reconconfig/classificadorLBPHMongo.yml')
     print("Modelo treinado e salvo com sucesso")

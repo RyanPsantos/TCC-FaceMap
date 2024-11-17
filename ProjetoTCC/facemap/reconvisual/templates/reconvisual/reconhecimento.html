@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/reconhecimento.css' %}"/>
+    <title>Reconhecimento Facial</title>
+</head>
+<body>
+    <main>
+        <h1>Reconhecimento Facial</h1>
+        <div class="instructions">
+            <p>Para que o reconhecimento facial seja bem-sucedido, posicione-se em frente à câmera com boa iluminação e mantenha uma expressão neutra.</p>
+        </div>
+        <div class="camera-section">
+            <video id="videoElement" autoplay></video>
+            <button id="startRecognition">Começar Reconhecimento Facial</button>
+        </div>
+    </main>
+</body>
+</html>

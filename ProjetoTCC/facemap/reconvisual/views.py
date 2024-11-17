@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
 from .models import Professor, Aluno
+from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from mongoengine.errors import DoesNotExist
 from django.http import JsonResponse
-import cv2
-import numpy as np
+from reconconfig.utils import captura_imagem  # Certifique-se que esta importação está correta
+import base64
 
 def login_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
@@ -63,6 +63,10 @@ def home(request):
     return render(request, 'reconvisual/home.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
 
 @login_required
+def reconhecimento(request):
+    return render(request, 'reconvisual/reconhecimento.html')
+
+@login_required
 def cadastroalunos(request):
     if request.method == 'POST':
         nome_completo = request.POST.get('nome_completo')
@@ -75,7 +79,15 @@ def cadastroalunos(request):
         curso = request.POST.get('curso')
         genero = request.POST.get('genero')
 
+        # Chama a função para capturar a imagem
+        foto_rosto_base64 = captura_imagem()
+
+        if not foto_rosto_base64:
+            messages.error(request, "A imagem do rosto não pôde ser capturada.")
+            return render(request, 'reconvisual/cadastroalunos.html')
+
         try:
+            # Criação do novo aluno
             novo_aluno = Aluno(
                 nome_completo=nome_completo,
                 email_institucional=email_institucional,
@@ -86,15 +98,22 @@ def cadastroalunos(request):
                 data_nascimento=data_nascimento,
                 curso=curso,
                 genero=genero,
+                foto_rosto=foto_rosto_base64  # Armazena a imagem em base64
             )
             novo_aluno.save()
 
             messages.success(request, "Cadastro de aluno realizado com sucesso!")
             return redirect('home')
+
         except Exception as e:
             messages.error(request, f"Erro ao cadastrar aluno: {e}")
-
     return render(request, 'reconvisual/cadastroalunos.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
+
+def captura_rosto(request):
+    imagem_rosto_base64 = captura_imagem()
+    if imagem_rosto_base64:
+        return JsonResponse({'imagem_rosto': imagem_rosto_base64})
+    return JsonResponse({'error': 'Erro na captura da imagem'}, status=500)
 
 @login_required
 def facemap(request):

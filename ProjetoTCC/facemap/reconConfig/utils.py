@@ -1,134 +1,67 @@
 import cv2
-import numpy as np
 import base64
-import os 
-from pymongo import MongoClient
-from datetime import datetime
-from PIL import Image
+import os
 from django.conf import settings
 
-client = MongoClient("mongodb://localhost:27017/")
-db = client["db_facemap"]
-collection = db["Aluno"]
-
-classificador = cv2.CascadeClassifier(
-    os.path.join(settings.STATICFILES_DIRS[0], 'models/haarcascade_frontalface_default.xml')
-)
-classificadorOlho = cv2.CascadeClassifier(
-    os.path.join(settings.STATICFILES_DIRS[0], 'models/haarcascade_eye.xml')
-)
-
-reconhecedor = cv2.face.LBPHFaceRecognizer_create()
-reconhecedor.read("reconconfig/classificadorLBPHMongo.yml")
-font = cv2.FONT_HERSHEY_COMPLEX_SMALL
-lbph = cv2.face.LBPHFaceRecognizer_create(2, 4, 8, 8, 50)
-camera = cv2.VideoCapture(0)
-amostra = 1
-numeroAmostras = 25
-largura, altura = 220, 220
-
-print("Capturando as faces...")
-
+def configurar_classificadores():
+    # Ajuste para garantir que o caminho do classificador está correto
+    caminho_classificador = os.path.join(settings, 'facemap/static/models/haarcascade_frontalface_default.xml')
+    print(f"Carregando classificador de rosto de: {caminho_classificador}")  # Imprime o caminho do classificador
+    
+    # Carregar o classificador Haar para detecção de rosto
+    classificador_rosto = cv2.CascadeClassifier(caminho_classificador)
+    
+    if classificador_rosto.empty():
+        print("Erro ao carregar o classificador de rosto.")
+        return None
+    return classificador_rosto
 
 def captura_imagem():
+    # Configurar a câmera
+    camera = cv2.VideoCapture(0)
+    if not camera.isOpened():
+        print("Erro ao acessar a câmera!")
+        return None
+    
+    # Carregar o classificador de rosto
+    classificador_rosto = configurar_classificadores()
+    if classificador_rosto is None:
+        return None
 
-    while (True):
+    amostra = 1
+    numeroAmostras = 25
+
+    while True:
         conectado, imagem = camera.read()
+        if not conectado:
+            print("Erro ao acessar a câmera!")
+            break
+        
+        # Converter a imagem para escala de cinza
         imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-        facesDetectadas = classificador.detectMultiScale(imagemCinza,
-                                                         scaleFactor=1.5,
-                                                         minSize=(150, 150))
+        
+        # Detectar os rostos
+        facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza, scaleFactor=1.5, minSize=(150, 150))
+
         for (x, y, l, a) in facesDetectadas:
             cv2.rectangle(imagem, (x, y), (x + l, y + a), (0, 0, 255), 2)
-            regiao = imagem[y:y + a, x:x + l]
-            regiaoCinzaOlho = cv2.cvtColor(regiao, cv2.COLOR_BGR2GRAY)
-            olhosDetectados = classificadorOlho.detectMultiScale(regiaoCinzaOlho)
+            
+            # Processamento do rosto detectado
+            imagemFace = cv2.resize(imagemCinza[y:y + a, x:x + l], (200, 200))
+            
+            # Convertendo a imagem para base64
+            _, buffer = cv2.imencode('.jpg', imagemFace)
+            imagem_base64 = base64.b64encode(buffer).decode('utf-8')
+            
+            # Retorna a imagem em base64
+            return imagem_base64
 
-            for (ox, oy, ol, oa) in olhosDetectados:
-                cv2.rectangle(regiao, (ox, oy), (ox + ol, oy + oa), (0, 255, 0), 2)
-
-
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    imagemFace = cv2.resize(imagemCinza[y:y + a, x:x + l], (largura, altura))
-
-                    _, buffer = cv2.imencode('.jpg', imagemFace)
-                    imagemBase64 = base64.b64encode(buffer).decode('utf-8')
-
-                    document = {
-                        "imagem": imagemBase64,
-                        "data_hora": datetime.now(),
-                        "amostra": amostra
-                    }
-                    collection.insert_one(document)
-                    print(f"[foto {amostra} capturada e salva com sucesso no MongoDB]")
-                    amostra += 1
-
-        cv2.imshow("Face", imagem)
-        cv2.waitKey(1)
-        if amostra > numeroAmostras:
+        # Se você quiser ver a imagem enquanto está detectando
+        # cv2.imshow("Face", imagem)
+        # Se você pressionar 'q', o loop será quebrado.
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
-    print("Faces capturadas com sucesso")
-    camera.release()
-    cv2.destroyAllWindows()
-
-    pass
-
-def treina_modelo():
-
-    faces = []
-    ids = []
-
-    documentos = collection.find({})
-
-    for documento in documentos:
-            imagemNP = np.array(documento['imagem'], dtype = 'uint8')
-            id = int(documento['id'])
-
-            ids.append(id)
-            faces.append(imagemNP)
-
-            return np.array(ids), faces
-
-    ids, faces = treina_modelo()
-
-    # Treinamento do reconhecedor LBPH
-    lbph.train(faces, ids)
-
-    # Salvar o classificador treinado em um arquivo
-    lbph.write('reconconfig/classificadorLBPHMongo.yml')
-
-    pass
-
-def analisando_rostos(id):
-     
-    documento = collection.find_one({"id": id})
     
-    if documento:
-        return documento['nome'] # Retorna o nome se encontrado
-    return "Desconhecido" # Retorna "Desconhecido" se o ID não for encontrado
-
-while True:
-    conectado, imagem = camera.read()
-    imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-    facesDetectadas = classificador.detectMultiScale(imagemCinza,
-                                                    scaleFactor = 1.5,
-                                                    minSize=(30, 30))
-    for (x, y, l, a) in facesDetectadas:
-        imagemFace = cv2.resize(imagemCinza[y:y + a, x:x + l], (largura, altura))
-        cv2.rectangle(imagem, (x, y), (x + l, y + a), (0, 0, 255), 2)
-        id, confianca = reconhecedor.predict(imagemFace)
-
-        nome = analisando_rostos(id)
-
-        cv2.putText(imagem, nome, (x, y + (a + 30)), font, 2, (0, 0, 255))
-        cv2.putText(imagem, str(confianca), (x, y + (a + 50)), font, 1, (0, 0, 255))
-
-    cv2.imshow("Face", imagem)
-    if cv2.waitKey(1) == ord('q'):
-        break
-
     camera.release()
     cv2.destroyAllWindows()
-
-    pass
+    return None
