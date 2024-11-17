@@ -78,41 +78,31 @@ def cadastroalunos(request):
         data_nascimento = request.POST.get('data_nascimento')
         curso = request.POST.get('curso')
         genero = request.POST.get('genero')
-
         # Pega a imagem base64 enviada do formulário
         imagem_rosto_base64 = request.POST.get('imagem_rosto')
 
         if imagem_rosto_base64:
-            # Remove a parte "data:image/jpeg;base64,"
-            imagem_base64 = imagem_rosto_base64.split(',')[1]
-            imagem_bytes = base64.b64decode(imagem_base64)
-            imagem_file = ContentFile(imagem_bytes)
+            # Armazena a imagem como string base64
+            novo_aluno = Aluno(
+                nome_completo=nome_completo,
+                email_institucional=email_institucional,
+                telefone=telefone,
+                endereco=endereco,
+                rg=rg,
+                registro_matricula=registro_matricula,
+                data_nascimento=data_nascimento,
+                curso=curso,
+                genero=genero,
+                foto_rosto=imagem_rosto_base64  # Armazena como base64
+            )
+            novo_aluno.save()
 
-            try:
-                # Criação do novo aluno
-                novo_aluno = Aluno(
-                    nome_completo=nome_completo,
-                    email_institucional=email_institucional,
-                    telefone=telefone,
-                    endereco=endereco,
-                    rg=rg,
-                    registro_matricula=registro_matricula,
-                    data_nascimento=data_nascimento,
-                    curso=curso,
-                    genero=genero,
-                    foto_rosto=imagem_file  # Armazena a imagem como binário
-                )
-                novo_aluno.save()
-
-                messages.success(request, "Cadastro de aluno realizado com sucesso!")
-                return redirect('home')
-
-            except Exception as e:
-                messages.error(request, f"Erro ao cadastrar aluno: {e}")
+            messages.success(request, "Cadastro de aluno realizado com sucesso!")
+            return redirect('home')
+        
         else:
             messages.error(request, "A imagem do rosto não pôde ser capturada.")
             return render(request, 'reconvisual/cadastroalunos.html')
-
     return render(request, 'reconvisual/cadastroalunos.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
 
 def captura_rosto(request):

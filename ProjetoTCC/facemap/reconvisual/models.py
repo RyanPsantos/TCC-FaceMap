@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmailField, DateField, BinaryField
+from mongoengine import Document, StringField, EmailField, DateField
 
 class Aluno(Document):
     nome_completo = StringField(required=True, max_length=200)
@@ -10,10 +10,10 @@ class Aluno(Document):
     data_nascimento = DateField(required=True)
     curso = StringField(required=True, max_length=100)
     genero = StringField(required=True, choices=["masculino", "feminino", "outros", "prefiro_nao_dizer"])
-    foto_rosto = BinaryField(required=True)
+    foto_rosto = StringField()  # Alterado para StringField, pois você está armazenando base64 como uma string
 
 class Professor(Document):
     username = StringField(required=True, unique=True, max_length=100)
     email_institucional = EmailField(required=True, max_length=100)
-    telefone = StringField(required=True, max_lenght=15)
+    telefone = StringField(required=True, max_length=15)
     senha = StringField(required=True, max_length=100)
