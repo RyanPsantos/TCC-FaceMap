@@ -5,6 +5,7 @@ from django.contrib import messages
 from mongoengine.errors import DoesNotExist
 from django.http import JsonResponse
 from reconconfig.utils import captura_imagem  # Certifique-se que esta importação está correta
+from django.core.files.base import ContentFile
 import base64
 
 def login_required(view_func):
@@ -66,7 +67,6 @@ def home(request):
 def reconhecimento(request):
     return render(request, 'reconvisual/reconhecimento.html')
 
-@login_required
 def cadastroalunos(request):
     if request.method == 'POST':
         nome_completo = request.POST.get('nome_completo')
@@ -79,34 +79,40 @@ def cadastroalunos(request):
         curso = request.POST.get('curso')
         genero = request.POST.get('genero')
 
-        # Chama a função para capturar a imagem
-        foto_rosto_base64 = captura_imagem()
+        # Pega a imagem base64 enviada do formulário
+        imagem_rosto_base64 = request.POST.get('imagem_rosto')
 
-        if not foto_rosto_base64:
+        if imagem_rosto_base64:
+            # Remove a parte "data:image/jpeg;base64,"
+            imagem_base64 = imagem_rosto_base64.split(',')[1]
+            imagem_bytes = base64.b64decode(imagem_base64)
+            imagem_file = ContentFile(imagem_bytes)
+
+            try:
+                # Criação do novo aluno
+                novo_aluno = Aluno(
+                    nome_completo=nome_completo,
+                    email_institucional=email_institucional,
+                    telefone=telefone,
+                    endereco=endereco,
+                    rg=rg,
+                    registro_matricula=registro_matricula,
+                    data_nascimento=data_nascimento,
+                    curso=curso,
+                    genero=genero,
+                    foto_rosto=imagem_file  # Armazena a imagem como binário
+                )
+                novo_aluno.save()
+
+                messages.success(request, "Cadastro de aluno realizado com sucesso!")
+                return redirect('home')
+
+            except Exception as e:
+                messages.error(request, f"Erro ao cadastrar aluno: {e}")
+        else:
             messages.error(request, "A imagem do rosto não pôde ser capturada.")
             return render(request, 'reconvisual/cadastroalunos.html')
 
-        try:
-            # Criação do novo aluno
-            novo_aluno = Aluno(
-                nome_completo=nome_completo,
-                email_institucional=email_institucional,
-                telefone=telefone,
-                endereco=endereco,
-                rg=rg,
-                registro_matricula=registro_matricula,
-                data_nascimento=data_nascimento,
-                curso=curso,
-                genero=genero,
-                foto_rosto=foto_rosto_base64  # Armazena a imagem em base64
-            )
-            novo_aluno.save()
-
-            messages.success(request, "Cadastro de aluno realizado com sucesso!")
-            return redirect('home')
-
-        except Exception as e:
-            messages.error(request, f"Erro ao cadastrar aluno: {e}")
     return render(request, 'reconvisual/cadastroalunos.html', {'usuario_nome': request.session.get('usuario_nome', 'Usuário')})
 
 def captura_rosto(request):

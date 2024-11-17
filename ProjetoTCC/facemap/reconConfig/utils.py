@@ -57,7 +57,7 @@ def captura_imagem():
             return imagem_base64
 
         # Se você quiser ver a imagem enquanto está detectando
-        # cv2.imshow("Face", imagem)
+        cv2.imshow("Face", imagem)
         # Se você pressionar 'q', o loop será quebrado.
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

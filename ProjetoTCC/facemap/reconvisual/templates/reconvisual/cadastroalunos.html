@@ -87,7 +87,11 @@
                 </div>
                 <div class="input-group">
                     <label for="face-id">Capturar Rosto</label>
-                    <button type="button" id="capture-button" onclick="capturaRosto()">Capturar</button>
+                    <button type="button" id="capture-button" onclick="abrirCamera()">Capturar</button>
+                    <div id="camera-container" style="display:none;">
+                        <video id="video" width="320" height="240" autoplay></video>
+                        <button type="button" onclick="tirarFoto()">Tirar Foto</button>
+                    </div>
                     <input type="hidden" id="imagem_rosto" name="imagem_rosto" />
                 </div>
                 <button type="submit">Cadastrar Aluno</button>
