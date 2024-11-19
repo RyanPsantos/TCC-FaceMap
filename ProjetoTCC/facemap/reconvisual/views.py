@@ -5,6 +5,76 @@ from django.contrib import messages
 from mongoengine.errors import DoesNotExist
 from django.http import JsonResponse
 from reconconfig.utils import captura_imagem  # Certifique-se que esta importação está correta
+from reconconfig.reconhecimento_facial import treina_modelo
+from reconconfig.reconhecimento_facial import configurar, analisando_rostos
+import cv2
+import numpy as np
+
+def reconhecimento_facial_view(request):
+    try:
+        # Configurar o reconhecedor
+        reconhecedor = configurar()
+        reconhecedor.read('reconconfig/classificadorLBPHMongo.yml')
+
+        # Inicializar a captura de vídeo
+        camera = cv2.VideoCapture(0)
+        classificador_rosto = cv2.CascadeClassifier('static/models/haarcascade_frontalface_default.xml')
+
+        while True:
+            conectado, imagem = camera.read()
+            if not conectado:
+                break
+            
+            imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
+            facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza, scaleFactor=1.5, minSize=(150, 150))
+
+            for (x, y, l, a) in facesDetectadas:
+                rosto = imagemCinza[y:y + a, x:x + l]
+                id, confianca = reconhecedor.predict(rosto)
+                if confianca < 50:  # Ajuste o limiar de confiança conforme necessário
+                    nome = analisando_rostos(id)
+                else:
+                    nome = "Desconhecido"
+
+                # Retorne o nome encontrado
+                camera.release()
+                return JsonResponse({'success': True, 'nome': nome})
+
+        camera.release()
+        return JsonResponse({'success': False, 'message': 'Nenhum rosto reconhecido.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Erro no reconhecimento facial: {str(e)}'})
+
+def treina_modelo(): 
+    # Busque imagens e etiquetas dos alunos cadastrados 
+    alunos = Aluno.objects.all() 
+    imagens = [] 
+    etiquetas = [] 
+    
+    for aluno in alunos: 
+    # Converte a imagem binária para um formato que o OpenCV possa ler 
+        np_array = np.frombuffer(aluno.foto_rosto, dtype=np.uint8) 
+        imagem = cv2.imdecode(np_array, cv2.IMREAD_GRAYSCALE) 
+        
+        imagens.append(imagem) 
+        etiquetas.append(aluno.id) 
+        
+    # Certifique-se de que as etiquetas sejam inteiros # Converte as listas para arrays do NumPy 
+    imagens = np.array(imagens) 
+    etiquetas = np.array(etiquetas) 
+    
+    # Cria o reconhecedor de faces e treina o modelo 
+    reconhecedor = cv2.face.LBPHFaceRecognizer_create() 
+    reconhecedor.train(imagens, etiquetas) 
+    # Salva o modelo treinado 
+    reconhecedor.write('reconconfig/classificadorLBPHMongo.yml')
+
+def treinar_modelo_view(request):
+    try:
+        treina_modelo()
+        return JsonResponse({'success': True, 'message': 'Modelo treinado com sucesso!'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Erro ao treinar modelo: {str(e)}'})
 
 def login_required(view_func):
     def _wrapped_view(request, *args, **kwargs):

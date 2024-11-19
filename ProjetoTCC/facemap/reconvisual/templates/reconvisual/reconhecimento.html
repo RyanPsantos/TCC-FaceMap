@@ -17,7 +17,36 @@
         <div class="camera-section">
             <video id="videoElement" autoplay></video>
             <button id="startRecognition">Começar Reconhecimento Facial</button>
+            <button id="trainModelButton">Treinar Modelo</button>
+            <div id="trainResult"></div>
         </div>
+        <script>
+            // Código para acessar a câmera
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    var video = document.getElementById('videoElement');
+                    video.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error("Erro ao acessar a câmera: ", error);
+                });
+
+            // Event listener para iniciar o reconhecimento facial
+            document.getElementById('startRecognition').addEventListener('click', function() {
+                // Código para iniciar o reconhecimento facial aqui
+                alert("Reconhecimento facial iniciado");
+            });
+
+            // Event listener para treinar o modelo
+            document.getElementById('trainModelButton').addEventListener('click', function() {
+                fetch("{% url 'treinar_modelo' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('trainResult').innerText = data.message;
+                    })
+                    .catch(error => alert("Erro: " + error));
+            });
+        </script>
     </main>
 </body>
 </html>

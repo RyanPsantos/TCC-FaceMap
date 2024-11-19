@@ -14,4 +14,5 @@ urlpatterns = [
     path('editar/<str:aluno_id>/', views.editar_aluno, name='editar_aluno'),  # Edita um aluno específico
     path('buscar_aluno/', views.buscar_aluno, name='buscar_aluno'),
     path('logout/', views.logout, name='logout'),
+    path('treinar_modelo/', views.treinar_modelo_view, name='treinar_modelo'),
 ]
