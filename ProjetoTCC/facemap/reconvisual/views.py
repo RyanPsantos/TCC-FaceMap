@@ -12,62 +12,56 @@ import numpy as np
 
 def reconhecimento_facial_view(request):
     try:
-        # Configurar o reconhecedor
-        reconhecedor = configurar()
+        # Configurar o reconhecedor e o classificador de rostos
+        classificador_rosto, reconhecedor = configurar()
         reconhecedor.read('reconconfig/classificadorLBPHMongo.yml')
 
         # Inicializar a captura de vídeo
         camera = cv2.VideoCapture(0)
-        classificador_rosto = cv2.CascadeClassifier('static/models/haarcascade_frontalface_default.xml')
 
         while True:
             conectado, imagem = camera.read()
             if not conectado:
                 break
-            
+
             imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-            facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza, scaleFactor=1.5, minSize=(150, 150))
+            facesDetectadas = classificador_rosto.detectMultiScale(
+                imagemCinza, scaleFactor=1.5, minSize=(150, 150)
+            )
 
             for (x, y, l, a) in facesDetectadas:
                 rosto = imagemCinza[y:y + a, x:x + l]
                 id, confianca = reconhecedor.predict(rosto)
+
                 if confianca < 50:  # Ajuste o limiar de confiança conforme necessário
                     nome = analisando_rostos(id)
+                    cor = (0, 255, 0)  # Verde para reconhecido
                 else:
                     nome = "Desconhecido"
+                    cor = (0, 0, 255)  # Vermelho para desconhecido
 
-                # Retorne o nome encontrado
-                camera.release()
-                return JsonResponse({'success': True, 'nome': nome})
+                # Desenhar o retângulo ao redor do rosto
+                cv2.rectangle(imagem, (x, y), (x + l, y + a), cor, 2)
+                cv2.putText(
+                    imagem, nome, (x, y - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, cor, 2
+                )
 
+            # Mostrar a imagem com o retângulo na tela
+            cv2.imshow('Reconhecimento Facial', imagem)
+
+            # Parar o loop ao pressionar a tecla 'q'
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        # Finalizar a captura de vídeo e limpar recursos
         camera.release()
-        return JsonResponse({'success': False, 'message': 'Nenhum rosto reconhecido.'})
+        cv2.destroyAllWindows()
+
+        return JsonResponse({'success': True, 'message': 'Processo concluído.'})
+
     except Exception as e:
         return JsonResponse({'success': False, 'message': f'Erro no reconhecimento facial: {str(e)}'})
-
-def treina_modelo(): 
-    # Busque imagens e etiquetas dos alunos cadastrados 
-    alunos = Aluno.objects.all() 
-    imagens = [] 
-    etiquetas = [] 
-    
-    for aluno in alunos: 
-    # Converte a imagem binária para um formato que o OpenCV possa ler 
-        np_array = np.frombuffer(aluno.foto_rosto, dtype=np.uint8) 
-        imagem = cv2.imdecode(np_array, cv2.IMREAD_GRAYSCALE) 
-        
-        imagens.append(imagem) 
-        etiquetas.append(aluno.id) 
-        
-    # Certifique-se de que as etiquetas sejam inteiros # Converte as listas para arrays do NumPy 
-    imagens = np.array(imagens) 
-    etiquetas = np.array(etiquetas) 
-    
-    # Cria o reconhecedor de faces e treina o modelo 
-    reconhecedor = cv2.face.LBPHFaceRecognizer_create() 
-    reconhecedor.train(imagens, etiquetas) 
-    # Salva o modelo treinado 
-    reconhecedor.write('reconconfig/classificadorLBPHMongo.yml')
 
 def treinar_modelo_view(request):
     try:
