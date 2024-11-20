@@ -12,9 +12,9 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Espaça o conteúdo e o footer */
+    justify-content: space-between;
     background-color: #f7f7f7;
-    padding-top: 20px; /* Adiciona espaço para o header fixo */
+    padding-top: 20px;
 }
 .header {
     position: fixed;
@@ -88,31 +88,63 @@ h2 {
     color: #333;
     font-size: 22px;
     margin-bottom: 15px;
-    text-align: center; /* Centraliza o título */
+    text-align: center;
 }
 main {
     display: flex;
     justify-content: center;
     padding: 20px;
-    flex-grow: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
+    flex-grow: 1;
     margin-top: 20px;
 }
 .form-container {
     background-color: #fff;
-    padding: 30px; /* Aumenta o espaço interno do formulário */
+    padding: 30px;
     width: 100%;
-    max-width: 800px; /* Aumenta o tamanho máximo do formulário */
+    max-width: 800px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 40px auto; /* Ajusta a margem superior e inferior para espaçamento */
+    margin: 40px auto;
 }
-#camera-container {
-    text-align: center;
-    margin-top: 20px;
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;  /* Permite que os itens se ajustem em telas menores */
 }
-video {
-    border: 2px solid #ccc;
+.input-group label {
+    flex-basis: 40%;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 5px;
+    min-width: 130px; /* Define uma largura mínima para os rótulos */
+}
+.input-group input, .input-group select {
+    flex-basis: 55%;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    min-width: 150px;  /* Define uma largura mínima para os campos */
+}
+.input-group select {
+    flex-basis: 57%;
+}
+.input-group button {
+    padding: 10px;
+    background-color: #149ADB;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-basis: auto;
+}
+.input-group button:hover {
+    background-color: #3a6ea5;
 }
 canvas {
     display: block;
@@ -120,31 +152,28 @@ canvas {
     border: 2px solid #ccc;
     border-radius: 5px;
 }
-.input-group {
-    display: flex; /* Alinha os campos em linha */
-    justify-content: space-between; /* Espaça os campos lado a lado */
-    margin-bottom: 10px; /* Aumenta o espaçamento entre os grupos */
+.capture-label {
+    margin-right: 10px;
+    flex-basis: auto;
 }
-.input-group label {
-    flex-basis: 40%; /* Define uma largura base para os rótulos */
-    color: #555;
-    font-weight: 600;
-    margin-bottom: 5px;
+#camera-container {
+    text-align: center;
+    margin-top: 20px;
 }
-.input-group input, .input-group select {
-    flex-basis: 55%; /* Define uma largura base para os campos de entrada */
-    padding: 10px; /* Aumenta o espaço interno dos campos */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    outline: none;
+#camera-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
 }
-.input-group select {
-    flex-basis: 57%; /* Aumenta a largura do campo gênero */
+#capture-button {
+    display: inline-block;
+    margin-bottom: 10px;
 }
-.input-group button {
-    flex-basis: 40%; /* Define uma largura para o botão de captura */
-    padding: 10px; /* Aumenta o espaço interno do botão */
+#take-photos-button {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 10px;
     background-color: #149ADB;
     border: none;
     color: #fff;
@@ -153,12 +182,13 @@ canvas {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.input-group button:hover {
+#take-photos-button:hover {
     background-color: #3a6ea5;
 }
-.input-group .capture-label {
-    margin-right: 10px; /* Espaço entre a label e o botão */
-    flex-basis: 40%; /* Define a largura da label */
+video {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 .form-container button {
     width: 100%;
@@ -170,26 +200,25 @@ canvas {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 5px; /* Adiciona margem superior aos botões */
+    margin-top: 10px;
 }
 .form-container button:hover {
     background-color: #3a6ea5;
 }
-/* Footer */
 .footer {
     background-color: #149ADB;
     color: #fff;
     text-align: center;
-    padding: 20px 0; /* Remove o padding lateral */
+    padding: 20px 0;
     position: relative;
-    width: 100vw; /* Garante que o footer ocupe 100% da largura da viewport */
-    left: 0; /* Garante que o footer comece no lado esquerdo */
-    margin: 0; /* Remove qualquer margem que possa criar brechas */
+    width: 100vw;
+    left: 0;
+    margin: 0;
 }
 .footer-nav {
     display: flex;
     justify-content: center;
-    gap: 30px; /* Espaço entre os links */
+    gap: 30px;
     margin-top: 10px;
 }
 .footer-nav a {
@@ -200,11 +229,10 @@ canvas {
 .footer-nav a:hover {
     text-decoration: underline;
 }
-/* Responsividade */
 @media (max-width: 768px) {
     .form-container {
         padding: 15px;
-        max-width: 100%; /* Garante que o formulário ocupe bem o espaço em telas menores */
+        max-width: 100%;
     }
     .form-container h2 {
         font-size: 18px;
@@ -217,7 +245,7 @@ canvas {
         font-size: 14px;
     }
     .footer-nav {
-        flex-direction: column; /* Coloca o conteúdo em coluna */
-        gap: 10px; /* Ajusta o espaço entre os links */
+        flex-direction: column;
+        gap: 10px;
     }
 }

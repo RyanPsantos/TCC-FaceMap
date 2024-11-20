@@ -19,20 +19,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Configuração inicial para MongoDB e classificadores
 def configurar():
-    # Caminho para os classificadores Haar dentro da pasta 'static/models'
     classificador_rosto = cv2.CascadeClassifier(str(BASE_DIR / 'static' / 'models' / 'haarcascade_frontalface_default.xml'))
     classificador_olho = cv2.CascadeClassifier(str(BASE_DIR / 'static' / 'models' / 'haarcascade_eye.xml'))
     
-    # Verificar se os classificadores foram carregados corretamente
     if classificador_rosto.empty() or classificador_olho.empty():
         print("Erro ao carregar classificadores de rosto ou olhos. Verifique o caminho.")
         raise ValueError("Erro ao carregar o classificador de rosto. Verifique o caminho.")
     
-    # Inicializar o reconhecedor de rostos
     reconhecedor = cv2.face.LBPHFaceRecognizer_create()  # Isso só funcionará se você tiver o opencv-contrib-python instalado
     return classificador_rosto, classificador_olho, reconhecedor
-
-configurar()  # Configuração inicial do MongoDB e classificadores
 
 # Função para capturar imagens
 def captura_imagem():
@@ -53,9 +48,8 @@ def captura_imagem():
             break
         
         imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-        facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza,
-                                                         scaleFactor=1.5,
-                                                         minSize=(150, 150))
+        facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza, scaleFactor=1.5, minSize=(150, 150))
+        
         for (x, y, l, a) in facesDetectadas:
             cv2.rectangle(imagem, (x, y), (x + l, y + a), (0, 0, 255), 2)
             regiao = imagem[y:y + a, x:x + l]
@@ -85,7 +79,7 @@ def captura_imagem():
                 print(f"[foto {amostra} capturada e salva com sucesso no MongoDB]")
                 amostra += 1
 
-        # Exibe a imagem com o rosto detectado
+        # Exibe a imagem com o rosto detectado e o quadrado vermelho fixo
         cv2.imshow("Face", imagem)
         if amostra > numeroAmostras:
             break
@@ -94,50 +88,32 @@ def captura_imagem():
     camera.release()
     cv2.destroyAllWindows()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Função para treinar o modelo
-import cv2
-import numpy as np
-from reconvisual.models import Aluno
-from pathlib import Path
-
-# Obter o diretório base do seu projeto
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 def treina_modelo():
     try:
         _, _, reconhecedor = configurar()
         if reconhecedor is None:
             raise ValueError("Erro ao configurar o reconhecedor.")
 
-        # Busca todos os alunos
         alunos = Aluno.objects.all()
         imagens = []
         etiquetas = []
 
         for aluno in alunos:
-            # Converte a imagem binária para um formato que o OpenCV possa ler
             np_array = np.frombuffer(aluno.foto_rosto, dtype=np.uint8)
             imagem = cv2.imdecode(np_array, cv2.IMREAD_GRAYSCALE)
 
             if imagem is not None:
                 imagens.append(imagem)
-                # Converte o ID do aluno para um número inteiro
-                etiquetas.append(int(str(aluno.id)[-6:], 16))  # Usa os últimos 6 dígitos do ObjectId como ID único
+                etiquetas.append(int(str(aluno.id)[-6:], 16))
 
-        # Certifique-se de que há dados suficientes para treinar o modelo
         if len(imagens) < 2:
             raise ValueError("Número insuficiente de imagens para treinar o modelo.")
 
-        # Converte as listas para arrays do NumPy e garante o tipo correto
-        imagens_np = [np.array(imagem, dtype=np.uint8) for imagem in imagens]  # Usa `dtype=object` para arrays de imagens
-        etiquetas_np = np.array(etiquetas, dtype=np.int32)  # Garante que seja inteiro de 32 bits
+        imagens_np = [np.array(imagem, dtype=np.uint8) for imagem in imagens]
+        etiquetas_np = np.array(etiquetas, dtype=np.int32)
 
-        # Cria o reconhecedor de faces e treina o modelo
         reconhecedor.train(imagens_np, etiquetas_np)
-        
-        # Salva o modelo treinado
         reconhecedor.write(str(BASE_DIR / 'reconconfig' / 'classificadorLBPHMongo.yml'))
         print("Modelo treinado com sucesso!")
     except Exception as e:

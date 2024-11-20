@@ -88,15 +88,18 @@
                 </div>
                 <!-- Captura de foto -->
                 <div class="input-group">
-                    <label for="face-id">Capturar Rosto</label>
-                    <button type="button" id="capture-button" onclick="abrirCamera()">Capturar</button>
-                    <div id="camera-container" style="display:none;">
-                        <video id="video" width="320" height="240" autoplay></video>
-                        <button type="button" onclick="tirarFoto()">Tirar Foto</button>
-                    </div>
-                    <!-- Campo oculto que será preenchido com o arquivo da foto -->
-                    <input type="file" id="imagem_rosto" name="imagem_rosto" style="display:none;">
+                    <label for="face-id" class="capture-label">Capturar Rosto</label>
+                    <button type="button" id="capture-button" onclick="iniciarCaptura()">Capturar</button>
                 </div>
+                <div id="camera-container">
+                    <div id="camera-box">
+                        <p id="status-message">O processo de captura levará cerca de 1 minuto. Por favor, mova-se levemente entre cada foto.</p>
+                        <video id="video" width="320" height="240" autoplay></video>
+                        <button type="button" id="take-photos-button" onclick="tirarFotos()">Tirar Fotos</button>
+                    </div>
+                </div>
+                <input type="file" id="imagem_rosto" name="imagem_rosto" style="display:none;">
+                <p id="final-message" style="display:none;">Captura concluída! O sistema está pronto para cadastrar suas informações.</p>
                 <button type="submit">Cadastrar Aluno</button>
             </form>            
         </div>
