@@ -33,7 +33,7 @@ def reconhecimento_facial_view(request):
                 rosto = imagemCinza[y:y + a, x:x + l]
                 id, confianca = reconhecedor.predict(rosto)
 
-                if confianca < 50:  # Ajuste o limiar de confiança conforme necessário
+                if confianca < 60:  # Ajuste o limiar de confiança conforme necessário
                     nome = analisando_rostos(id)
                     cor = (0, 255, 0)  # Verde para reconhecido
                 else:

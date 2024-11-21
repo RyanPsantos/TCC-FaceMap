@@ -118,10 +118,11 @@ def treina_modelo():
         print("Modelo treinado com sucesso!")
     except Exception as e:
         raise ValueError(f"Erro ao treinar modelo: {str(e)}")
-
+    
 def analisando_rostos(id):
     try:
         aluno = Aluno.objects.get(id=id)
         return aluno.nome_completo
     except Aluno.DoesNotExist:
+        print(f"ID {id} não encontrado no banco de dados.")
         return "Desconhecido"

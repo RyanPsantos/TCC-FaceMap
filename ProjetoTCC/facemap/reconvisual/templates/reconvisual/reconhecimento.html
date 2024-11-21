@@ -20,6 +20,9 @@
             <button id="trainModelButton">Treinar Modelo</button>
             <div id="trainResult"></div>
         </div>
+        <div class="navigation">
+            <button><a href="{% url 'home' %}">Voltar</a></button>
+        </div>
         <script>
             // Código para acessar a câmera
             navigator.mediaDevices.getUserMedia({ video: true })
