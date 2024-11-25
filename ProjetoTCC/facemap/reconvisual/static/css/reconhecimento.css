@@ -22,12 +22,21 @@ main{
     padding: 20px;
     gap: 20px;
 }
+.recognition-textbox {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    width: 300px;
+}
 .instructions{
     background-color: #fff;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
+    width: 99%;
     max-width: 600px;
     text-align: center;
     margin-bottom: 20px;

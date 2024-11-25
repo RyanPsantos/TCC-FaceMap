@@ -2,67 +2,88 @@ from .models import Professor, Aluno
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
+from django.conf import settings
 from mongoengine.errors import DoesNotExist
 from django.http import JsonResponse
-from reconconfig.utils import captura_imagem  # Certifique-se que esta importação está correta
+from reconconfig.utils import captura_imagem, configurar_classificadores  # Certifique-se que esta importação está correta
 from reconconfig.reconhecimento_facial import treina_modelo
-from reconconfig.reconhecimento_facial import configurar, analisando_rostos
+from reconconfig import reconhecimento_facial
+from reconconfig.reconhecimento_facial import captura_imagem
 import cv2
+import os
 import numpy as np
 
-def reconhecimento_facial_view(request):
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+def captura_imagem_e_identificar_com_lbph(request):
+    #Captura a imagem da câmera, faz o reconhecimento facial e tenta identificar no banco de dados.
+    classificador_rosto = configurar_classificadores()
+    if classificador_rosto is None:
+        return render(request, 'reconvisual/reconhecimento.html', {"mensagem": "Erro ao configurar o classificador de rosto."})
+        
+    # Carregar o modelo LBPH treinado
+    caminho_modelo = os.path.join(settings.BASE_DIR, 'reconconfig', 'classificadorLBPHMongo.yml')
+    reconhecedor = cv2.face.LBPHFaceRecognizer_create(2, 2, 5, 5, 30)
+    reconhecedor.read(caminho_modelo)
+    if not os.path.exists(caminho_modelo):
+        return render(request, 'reconvisual/reconhecimento.html', {"mensagem": "O arquivo do classificador não foi encontrado."})
+    else:
+        print("Classificador carregado com sucesso.")
+
+    # Configurar a câmera
+    camera = cv2.VideoCapture(0)
+    if not camera.isOpened():
+        return render(request, 'reconvisual/reconhecimento.html', {"mensagem": "Erro ao capturar a imagem da câmera."})
+ 
+    while True:
+        conectado, imagem = camera.read()
+        if not conectado:
+            return render(request, 'reconvisual/reconhecimento.html', {"mensagem": "Erro ao capturar a imagem da câmera."})
+        
+        imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
+        facesDetectadas = classificador_rosto.detectMultiScale(imagemCinza, scaleFactor=1.3, minSize=(100, 100))
+
+        for (x, y, l, a) in facesDetectadas:
+            cv2.rectangle(imagem, (x, y), (x + l, y + a), (0, 255, 0), 2)
+            # Extrair o rosto detectado
+            rosto = imagemCinza[y:y + a, x:x + l]
+            rosto = cv2.resize(rosto, (200, 200))
+
+            # Reconhecer o rosto usando o LBPH
+            id, confianca = reconhecedor.predict(rosto)
+            print(f"ID Predito: {id}, Confiança: {confianca}")
+
+            # Definir limite de confiança para reconhecer a pessoa
+            if confianca < 50:  # Ajuste o limiar conforme necessário
+                try:
+                    aluno = Aluno.objects.get(id=id)
+                    nome = aluno.nome_completo
+                except Aluno.DoesNotExist:
+                    nome = "Aluno nao encontrado"
+            else:
+                nome = "Nao e um aluno"
+
+            fonte = cv2.FONT_HERSHEY_SIMPLEX
+            cv2.putText(imagem, nome, (x, y + a + 20), fonte, 0.8, (0, 255, 0), 2)
+
+        cv2.imshow("Reconhecimento Facial", imagem)
+
+        # Quebrar o loop ao pressionar a tecla 'q'
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    camera.release()
+    cv2.destroyAllWindows()
+
+    return render(request, 'reconvisual/reconhecimento.html', {"mensagem": nome})
+
+def iniciar_reconhecimento(request):
     try:
-        # Configurar o reconhecedor e o classificador de rostos
-        classificador_rosto, reconhecedor = configurar()
-        reconhecedor.read('reconconfig/classificadorLBPHMongo.yml')
-
-        # Inicializar a captura de vídeo
-        camera = cv2.VideoCapture(0)
-
-        while True:
-            conectado, imagem = camera.read()
-            if not conectado:
-                break
-
-            imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-            facesDetectadas = classificador_rosto.detectMultiScale(
-                imagemCinza, scaleFactor=1.5, minSize=(150, 150)
-            )
-
-            for (x, y, l, a) in facesDetectadas:
-                rosto = imagemCinza[y:y + a, x:x + l]
-                id, confianca = reconhecedor.predict(rosto)
-
-                if confianca < 60:  # Ajuste o limiar de confiança conforme necessário
-                    nome = analisando_rostos(id)
-                    cor = (0, 255, 0)  # Verde para reconhecido
-                else:
-                    nome = "Desconhecido"
-                    cor = (0, 0, 255)  # Vermelho para desconhecido
-
-                # Desenhar o retângulo ao redor do rosto
-                cv2.rectangle(imagem, (x, y), (x + l, y + a), cor, 2)
-                cv2.putText(
-                    imagem, nome, (x, y - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, cor, 2
-                )
-
-            # Mostrar a imagem com o retângulo na tela
-            cv2.imshow('Reconhecimento Facial', imagem)
-
-            # Parar o loop ao pressionar a tecla 'q'
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-        # Finalizar a captura de vídeo e limpar recursos
-        camera.release()
-        cv2.destroyAllWindows()
-
-        return JsonResponse({'success': True, 'message': 'Processo concluído.'})
-
+        resultado = captura_imagem()
+        return JsonResponse(resultado)
     except Exception as e:
-        return JsonResponse({'success': False, 'message': f'Erro no reconhecimento facial: {str(e)}'})
-
+        return JsonResponse({"status": "erro", "mensagem": f"Erro: {str(e)}"}, status=500)
+    
 def treinar_modelo_view(request):
     try:
         treina_modelo()

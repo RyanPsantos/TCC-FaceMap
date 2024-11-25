@@ -21,9 +21,9 @@ connect(
     host='localhost',
     port=27017
 )
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -36,7 +36,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'reconvisual',
-    'reconconfig'
+    'reconconfig',
+    'channels',  # Django Channels para suporte a WebSockets
 ]
 
 MIDDLEWARE = [
@@ -77,6 +77,16 @@ TEMPLATES = [
         },
     },
 ]
+
+# Atualize o ASGI_APPLICATION para usar o Channels
+ASGI_APPLICATION = 'facemap.asgi.application'
+
+# Configuração do Django Channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # Para desenvolvimento; em produção, use Redis.
+    },
+}
 
 WSGI_APPLICATION = 'facemap.wsgi.application'
 
@@ -120,7 +130,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -133,7 +142,6 @@ STATICFILES_DIRS = [
 
 # Diretório para coletar arquivos estáticos em produção (com collectstatic)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Para compatibilidade com versões anteriores
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

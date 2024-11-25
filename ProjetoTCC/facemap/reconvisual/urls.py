@@ -15,4 +15,5 @@ urlpatterns = [
     path('buscar_aluno/', views.buscar_aluno, name='buscar_aluno'),
     path('logout/', views.logout, name='logout'),
     path('treinar_modelo/', views.treinar_modelo_view, name='treinar_modelo'),
+    path('iniciar_reconhecimento/', views.iniciar_reconhecimento, name='iniciar_reconhecimento'),
 ]

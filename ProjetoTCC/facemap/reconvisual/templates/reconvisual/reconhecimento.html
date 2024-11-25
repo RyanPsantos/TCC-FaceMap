@@ -10,46 +10,80 @@
 </head>
 <body>
     <main>
-        <h1>Reconhecimento Facial</h1>
-        <div class="instructions">
-            <p>Para que o reconhecimento facial seja bem-sucedido, posicione-se em frente à câmera com boa iluminação e mantenha uma expressão neutra.</p>
-        </div>
         <div class="camera-section">
-            <video id="videoElement" autoplay></video>
+            <h1>Reconhecimento Facial</h1>
+            <div class="instructions">
+                <p>Para realizar o reconhecimento facial, a câmera será ativada. Certifique-se de estar bem posicionado em frente a ela, em um ambiente com boa iluminação, e mantenha uma expressão neutra.</p>
+            </div>
+            <img src="{% static 'img/reconhecimento_facial.png' %}" alt="Área de reconhecimento facial" class="instructions">
+            
+            <!-- Exibindo a mensagem acima dos botões -->
+            {% if mensagem %}
+                <div class="alert alert-info" role="alert">
+                    {{ mensagem }}
+                </div>
+            {% endif %}
+            
             <button id="startRecognition">Começar Reconhecimento Facial</button>
             <button id="trainModelButton">Treinar Modelo</button>
-            <div id="trainResult"></div>
+            
+            <div id="status" class="status">
+                <p id="statusMessage">Aguardando ação...</p>
+            </div>
+            <div class="navigation">
+                <button><a href="{% url 'home' %}">Voltar</a></button>
+            </div>
         </div>
-        <div class="navigation">
-            <button><a href="{% url 'home' %}">Voltar</a></button>
-        </div>
-        <script>
-            // Código para acessar a câmera
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    var video = document.getElementById('videoElement');
-                    video.srcObject = stream;
-                })
-                .catch(function(error) {
-                    console.error("Erro ao acessar a câmera: ", error);
-                });
-
-            // Event listener para iniciar o reconhecimento facial
-            document.getElementById('startRecognition').addEventListener('click', function() {
-                // Código para iniciar o reconhecimento facial aqui
-                alert("Reconhecimento facial iniciado");
-            });
-
-            // Event listener para treinar o modelo
-            document.getElementById('trainModelButton').addEventListener('click', function() {
-                fetch("{% url 'treinar_modelo' %}")
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('trainResult').innerText = data.message;
-                    })
-                    .catch(error => alert("Erro: " + error));
-            });
-        </script>
     </main>
+    
+    <script>
+        const statusMessage = document.getElementById('statusMessage');
+
+        // WebSocket para comunicação em tempo real
+        const socket = new WebSocket("ws://{{ request.get_host }}/ws/reconhecimento/");
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.message) {
+                statusMessage.innerText = data.message; // Atualiza o status em tempo real
+            }
+        };
+
+        socket.onopen = function() {
+            console.log("WebSocket conectado.");
+        };
+
+        socket.onclose = function() {
+            console.log("WebSocket desconectado.");
+        };
+
+        socket.onerror = function(error) {
+            console.error("Erro no WebSocket:", error);
+        };
+
+        // Botão para iniciar reconhecimento facial
+        document.getElementById('startRecognition').addEventListener('click', function() {
+            fetch("{% url 'iniciar_reconhecimento' %}") // URL no backend
+                .then(response => response.json())
+                .then(data => {
+                    if (data.mensagem) {
+                        statusMessage.innerText = data.mensagem;
+                    }
+                })
+                .catch(error => alert("Erro ao iniciar reconhecimento facial: " + error));
+        });
+
+        // Botão para treinar o modelo
+        document.getElementById('trainModelButton').addEventListener('click', function() {
+            fetch("{% url 'treinar_modelo' %}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        statusMessage.innerText = data.message;
+                    }
+                })
+                .catch(error => alert("Erro ao treinar o modelo: " + error));
+        });
+    </script>
 </body>
 </html>
