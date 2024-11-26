@@ -35,7 +35,7 @@ def configurar_reconhecedor():
     """
     Configura o reconhecedor LBPH e retorna seu caminho.
     """
-    reconhecedor = cv2.face.LBPHFaceRecognizer_create(4, 2, 8, 8, 40)
+    reconhecedor = cv2.face.LBPHFaceRecognizer_create(2, 2, 5, 5, 30)
     caminho_modelo = BASE_DIR / 'reconconfig' / 'classificadorLBPHMongo.yml'
 
     if os.path.exists(caminho_modelo):
@@ -114,7 +114,7 @@ def captura_imagem():
                 # Exibindo o nível de confiança
                 confianca_texto = f"Confianca: {confianca:.2f}"
 
-                if confianca > 50:
+                if confianca > 10:
                     nome = "Nao e um aluno"  # Caso o reconhecimento tenha baixa confiança
                 else:
                     aluno_id = id_map.get(str(id))
@@ -137,7 +137,7 @@ def captura_imagem():
             )
 
             # Coloca o nome e o nível de confiança na imagem
-            cv2.putText(frame, f"{nome} - {confianca_texto}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (105, 255, 97), 2)
+            cv2.putText(frame, nome, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (105, 255, 97), 2)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         cv2.imshow("Reconhecimento Facial", frame)

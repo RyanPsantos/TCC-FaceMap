@@ -12,7 +12,9 @@ function iniciarCaptura() {
     cameraContainer.style.display = "block";
 
     // Acessa a webcam
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ 
+        video:{ width: { ideal: 1200 }, height: {ideal: 720} }
+    })
         .then(function(stream) {
             video.srcObject = stream;
             statusMessage.textContent = "A câmera está ligada. Clique em 'Tirar Fotos' para começar a captura.";
@@ -28,12 +30,16 @@ function tirarFotos() {
         var canvas = document.createElement("canvas");
         var context = canvas.getContext("2d");
 
-        canvas.width = 320;
-        canvas.height = 240;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+        // Adiciona flash na captura
+        video.style.filter = "brightness(1.5)";
+        setTimeout(() => video.style.filter = "brightness(1)", 200); // Retorna ao normal
+
         canvas.toBlob(function(blob) {
-            var file = new File([blob], `foto_rosto_${fotosCapturadas.length + 1}.png`, { type: "image/png" });
+            var file = new File([blob], `foto_rosto_${fotosCapturadas.length + 1}.jpeg`, { type: "image/jpeg" });
             fotosCapturadas.push(file);
 
             if (fotosCapturadas.length < maxFotos) {
@@ -44,7 +50,7 @@ function tirarFotos() {
                 statusMessage.style.display = "none";
                 finalMessage.style.display = "block";
             }
-        }, "image/png");
+        }, "image/jpeg", 0.95);
     }
 }
 // Preenche o campo de input com todas as fotos capturadas
