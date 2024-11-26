@@ -35,7 +35,7 @@ def configurar_reconhecedor():
     """
     Configura o reconhecedor LBPH e retorna seu caminho.
     """
-    reconhecedor = cv2.face.LBPHFaceRecognizer_create(4, 2, 6, 6, 40)
+    reconhecedor = cv2.face.LBPHFaceRecognizer_create(4, 2, 8, 8, 40)
     caminho_modelo = BASE_DIR / 'reconconfig' / 'classificadorLBPHMongo.yml'
 
     if os.path.exists(caminho_modelo):
@@ -73,7 +73,7 @@ def captura_imagem():
         with open(BASE_DIR / 'reconconfig' / 'id_map.json', 'r') as f:
             id_map = json.load(f)
     except FileNotFoundError:
-        async_to_sync(channel_layer.group_send)(
+        async_to_sync(channel_layer.group_send)( 
             "reconhecimento",
             {
                 "type": "send_message",
@@ -84,7 +84,7 @@ def captura_imagem():
 
     camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if not camera.isOpened():
-        async_to_sync(channel_layer.group_send)(
+        async_to_sync(channel_layer.group_send)( 
             "reconhecimento",
             {
                 "type": "send_message",
@@ -102,6 +102,7 @@ def captura_imagem():
         imagemCinza = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = classificador_rosto.detectMultiScale(imagemCinza, scaleFactor=1.1, minSize=(30, 30))
         nome = "Não identificado"  # Valor padrão para rostos não identificados
+        confianca_texto = ""  # Variável para armazenar o texto da confiança
 
         for (x, y, w, h) in faces:
             rosto = imagemCinza[y:y + h, x:x + w]
@@ -110,7 +111,10 @@ def captura_imagem():
             try:
                 id, confianca = reconhecedor.predict(rosto)
 
-                if confianca < 10:
+                # Exibindo o nível de confiança
+                confianca_texto = f"Confianca: {confianca:.2f}"
+
+                if confianca > 50:
                     nome = "Nao e um aluno"  # Caso o reconhecimento tenha baixa confiança
                 else:
                     aluno_id = id_map.get(str(id))
@@ -132,7 +136,8 @@ def captura_imagem():
                 },
             )
 
-            cv2.putText(frame, nome, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (105, 255, 97), 2)
+            # Coloca o nome e o nível de confiança na imagem
+            cv2.putText(frame, f"{nome} - {confianca_texto}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (105, 255, 97), 2)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         cv2.imshow("Reconhecimento Facial", frame)
